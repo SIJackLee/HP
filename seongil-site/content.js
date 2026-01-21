@@ -1,0 +1,306 @@
+/**
+ * ============================================
+ * ★ 디자인팀 수정 가이드 ★
+ * ============================================
+ * 
+ * 이 파일(content.js)만 수정하면 사이트의 모든 문구와 정보가 변경됩니다.
+ * 
+ * [수정 방법]
+ * 1. 문구/연락처/연혁/자료실 변경: 아래 객체의 값만 수정하세요.
+ * 2. 제품 사진 넣기: 
+ *    - assets/products/ 폴더에 이미지 파일을 넣으세요.
+ *    - 아래 products 배열의 imageFileName에 파일명만 입력하세요.
+ * 3. 자료실 PDF 넣기:
+ *    - assets/resources/ 폴더에 PDF 파일을 넣으세요.
+ *    - 아래 resources 배열의 fileName에 파일명만 입력하세요.
+ * 
+ * ⚠️ 주의: HTML/CSS는 건드리지 않아도 운영 가능합니다.
+ * ============================================
+ * 
+ * [섹션 구조 설명]
+ * 
+ * 1. basicInfo: 기본 정보
+ *    - companyName: 회사명 (모든 페이지에 표시)
+ *    - slogan: 슬로건 (모든 페이지에 표시)
+ * 
+ * 2. pages: 각 페이지별 메타 정보
+ *    - home/about/products/resources/support
+ *    - 각 페이지의 title, description, ogTitle, ogDescription, pageTitle, pageSubtitle 포함
+ * 
+ * 3. home: 홈페이지 콘텐츠
+ *    - heroTitle, heroSubtitle: 메인 히어로 섹션
+ *    - aboutSectionTitle, aboutSectionText: 회사 소개 미리보기
+ *    - productsSectionTitle, productsSectionSubtitle: 제품 섹션
+ * 
+ * 4. about: 회사소개 페이지
+ *    - paragraph1, paragraph2: 본문 문단
+ *    - brandMessage: 브랜드 메시지
+ *    - globalNetworkTitle, globalNetworkDescription, globalCountries: 글로벌 네트워크
+ *    - coreValuesTitle, coreValues: 5대 핵심 가치
+ *    - organizationTitle, organization: 조직도
+ *    - historyTitle, history: 회사 연혁
+ * 
+ * 5. products: 제품 정보 배열
+ *    - name: 제품명
+ *    - description: 제품 설명
+ *    - imageFileName: 이미지 파일명 (null이면 placeholder 표시)
+ * 
+ * 6. resources: 자료실 항목 배열
+ *    - title: 자료 제목
+ *    - description: 자료 설명
+ *    - fileName: PDF 파일명 (null이면 "자료 준비중" 표시)
+ * 
+ * 7. contact: 연락처 정보
+ *    - phone, hours, address, email, mapLink
+ * 
+ * 8. support: A/S 문의 관련
+ *    - contactInfoTitle, locationTitle, inquiryTitle: 섹션 제목
+ *    - contactLabels: 라벨 (phone, hours, email, address)
+ *    - emailSubject, emailBodyTemplate: 이메일 템플릿
+ *    - requiredInfoTitle, requiredInfo: A/S 접수 시 필요한 정보
+ *    - clipboard 메시지들
+ * 
+ * 9. ui: UI 라벨 및 버튼 텍스트
+ *    - skipLink, footerContact, footerAddress
+ *    - buttons: learnMore, viewAllProducts, download, emailInquiry, copyTemplate, viewMap
+ *    - status: imagePlaceholder, resourcePending
+ *    - footer: copyright
+ * 
+ * [하드코딩 제거 결과]
+ * - 모든 콘텐츠 문자열이 이 파일로 통합되었습니다.
+ * - HTML/CSS/JS 파일에는 렌더링 로직만 남아있습니다.
+ * - 디자인팀은 이 파일만 수정하면 모든 페이지의 콘텐츠가 변경됩니다.
+ * ============================================
+ */
+
+const SITE_CONTENT = {
+  // ===== 기본 정보 =====
+  basicInfo: {
+    companyName: "성일기전",
+    slogan: "축산 환경을 위한 스마트 환기 솔루션 리더",
+    logoImageFileName: "logo.jpg" // assets/logo/ 폴더에 로고 이미지 넣고 파일명 입력
+  },
+  
+  // ===== 페이지별 제목/설명 =====
+  pages: {
+    home: {
+      title: "성일기전 - 축산 환경을 위한 스마트 환기 솔루션 리더",
+      description: "성일기전 - 축산 환경을 위한 스마트 환기 솔루션 리더. 최적의 축사 환경을 위한 끊임없는 노력, 연구하는 성일기전입니다.",
+      ogTitle: "성일기전 - 축산 환경을 위한 스마트 환기 솔루션",
+      ogDescription: "스마트 축사의 미래, 성일이 함께 합니다. 최적의 축사 환경을 위한 끊임없는 노력, 연구하는 성일기전입니다."
+    },
+    about: {
+      title: "회사소개 - 성일기전",
+      description: "성일기전 회사소개 - 1996년 설립 이래 축산 환기 전문 기업으로 전 세계에 신뢰받는 환기 솔루션을 제공하고 있습니다.",
+      ogTitle: "회사소개 - 성일기전",
+      ogDescription: "성일기전은 축사 환경을 기반으로 한 환기 시스템 및 컨트롤러 개발에 전념해 온 축산 환기 전문 기업입니다.",
+      pageTitle: "회사소개",
+      pageSubtitle: "축산 환경을 위한 스마트 환기 솔루션 리더"
+    },
+    products: {
+      title: "제품소개 - 성일기전",
+      description: "성일기전 제품소개 - SLF 오토휀, 환기 컨트롤러, 환기 시스템 등 축사 환경 최적화를 위한 솔루션을 제공합니다.",
+      ogTitle: "제품소개 - 성일기전",
+      ogDescription: "축종별 환경 조건에 최적화된 고효율 환기팬과 스마트 컨트롤러를 제공하는 성일기전의 제품을 소개합니다.",
+      pageTitle: "제품소개",
+      pageSubtitle: "축사 환경 최적화를 위한 성일기전의 솔루션"
+    },
+    resources: {
+      title: "자료실 - 성일기전",
+      description: "성일기전 자료실 - 제품 카탈로그, 설치 가이드, 기술 자료 등을 다운로드하실 수 있습니다.",
+      ogTitle: "자료실 - 성일기전",
+      ogDescription: "성일기전의 제품 카탈로그, 설치 가이드, 기술 자료를 다운로드하실 수 있습니다.",
+      pageTitle: "자료실",
+      pageSubtitle: "제품 카탈로그, 설치 가이드, 기술 자료를 다운로드하실 수 있습니다."
+    },
+    support: {
+      title: "A/S 문의 - 성일기전",
+      description: "성일기전 A/S 문의 - 제품 A/S 및 기술 지원을 위한 연락처 정보를 제공합니다.",
+      ogTitle: "A/S 문의 - 성일기전",
+      ogDescription: "성일기전 제품 A/S 및 기술 지원을 위한 연락처 정보를 확인하실 수 있습니다.",
+      pageTitle: "A/S 문의",
+      pageSubtitle: "제품 A/S 및 기술 지원을 위해 언제든지 연락주세요."
+    }
+  },
+  
+  // ===== 홈페이지 콘텐츠 =====
+  home: {
+    heroTitle: "스마트 축사의 미래, 성일이 함께 합니다.",
+    heroSubtitle: "최적의 축사 환경을 위한 끊임없는 노력, 연구하는 성일기전입니다.",
+    aboutSectionTitle: "성일기전 소개",
+    aboutSectionText: "성일기전은 1996년 설립 이래, 축사 환경을 기반으로 한 환기 시스템 및 컨트롤러 개발에 전념해 온 축산 환기 전문 기업입니다. 오랜 노하우와 현장 경험을 바탕으로, 축사 내부의 쾌적한 환경과 동물복지를 실현하는 데 필수적인 환기 솔루션을 제공하고 있습니다.",
+    productsSectionTitle: "주요 제품",
+    productsSectionSubtitle: "축사 환경 최적화를 위한 솔루션"
+  },
+  
+  // ===== 회사소개 페이지 =====
+  about: {
+    paragraph1: "성일기전은 1996년 설립 이래, 축사 환경을 기반으로 한 환기 시스템 및 컨트롤러 개발에 전념해 온 축산 환기 전문 기업입니다. 오랜 노하우와 현장 경험을 바탕으로, 축사 내부의 쾌적한 환경과 동물복지를 실현하는 데 필수적인 환기 솔루션을 제공하고 있습니다.",
+    paragraph2: "대표 브랜드인 SLF 오토휀(SLF Autofan)은 축종별 환경 조건에 최적화된 고효율 환기팬으로 국내·외 많은 농장 고객들로부터 높은 신뢰를 받고 있으며, 유럽·중동·일본·동남아시아 등 다양한 국가에 수출하고 있습니다.",
+    brandMessage: "성일기전은 '끊임없는 변화, 더불어 하는 발전'이라는 가치 아래 농장·환경·자연과의 공생을 실현하고자 노력합니다. 고효율 팬, 스마트 컨트롤러, 내구성이 높은 엔지니어링 소재를 기반으로 농장의 생산성과 동물의 편안함을 함께 향상시키는 솔루션을 제공합니다.",
+    globalNetworkTitle: "글로벌 네트워크",
+    globalNetworkDescription: "성일기전의 제품은 전 세계 다양한 국가에서 신뢰받고 있습니다.",
+    globalCountries: ["한국", "일본", "캐나다", "호주", "태국", "스페인", "러시아", "우크라이나", "터키"],
+    coreValuesTitle: "5대 핵심 가치",
+    coreValues: [
+      { title: "신뢰와 책임", description: "고객과의 약속을 지키고 책임감 있는 제품을 제공합니다.", icon: "🤝" },
+      { title: "고객 중심", description: "고객의 요구사항을 최우선으로 고려합니다.", icon: "👥" },
+      { title: "혁신 정신", description: "지속적인 연구개발로 기술 혁신을 추구합니다.", icon: "💡" },
+      { title: "도전적 실행", description: "새로운 시장과 기회에 적극적으로 도전합니다.", icon: "🎯" },
+      { title: "글로벌 지향", description: "세계 시장을 향한 지속적인 확장을 추구합니다.", icon: "🌍" }
+    ],
+    organizationTitle: "조직도",
+    organization: {
+      ceo: "대표이사",
+      departments: [
+        "제조생산부",
+        "행정지원부",
+        "기업부설연구소",
+        "영업부"
+      ]
+    },
+    historyTitle: "회사 연혁",
+    history: [
+      { year: "1996", event: "성일기전 회사 설립" },
+      { year: "1999", event: "환기팬 개발 및 일본 수출 시작" },
+      { year: "2000", event: "일본 해외 직 수출 개시" },
+      { year: "2001", event: "중국·대만 등 아시아 지역 수출 확대 및 직영지사 설립" },
+      { year: "2002", event: "유럽 CE 인증 획득" },
+      { year: "2003", event: "유럽 주요 환기·환경 기업들과 수출 계약 체결" },
+      { year: "2009", event: "대한민국 축산박람회 최우수 제품상 수상" },
+      { year: "2011", event: "중국 Tianjin Autofan Co., Ltd 현지 법인 설립" },
+      { year: "2012", event: "남미·유럽 등 해외 수출 확대" }
+    ]
+  },
+  
+  // ===== 제품 정보 =====
+  products: [
+    {
+      name: "SLF 오토휀",
+      description: "축종별 환경 조건에 최적화된 고효율 환기팬",
+      imageFileName: null // assets/products/ 폴더에 이미지 넣고 파일명 입력
+    },
+    {
+      name: "환기 컨트롤러",
+      description: "스마트 축사 환경 제어 시스템",
+      imageFileName: null
+    },
+    {
+      name: "환기 시스템",
+      description: "통합 환기 솔루션",
+      imageFileName: null
+    },
+    {
+      name: "환기팬 시리즈 A",
+      description: "고효율 에너지 절약형 환기팬",
+      imageFileName: null
+    },
+    {
+      name: "환기팬 시리즈 B",
+      description: "대용량 축사용 환기팬",
+      imageFileName: null
+    },
+    {
+      name: "스마트 컨트롤러 Pro",
+      description: "IoT 연동 스마트 환기 제어 시스템",
+      imageFileName: null
+    }
+  ],
+  
+  // ===== 자료실 항목 =====
+  resources: [
+    {
+      title: "제품 카탈로그",
+      description: "성일기전 제품 전체 카탈로그",
+      fileName: null // assets/resources/ 폴더에 PDF 넣고 파일명 입력
+    },
+    {
+      title: "설치 가이드",
+      description: "환기팬 설치 및 사용 가이드",
+      fileName: null
+    },
+    {
+      title: "기술 자료",
+      description: "제품 기술 사양서",
+      fileName: null
+    },
+    {
+      title: "유지보수 매뉴얼",
+      description: "제품 유지보수 및 점검 가이드",
+      fileName: null
+    },
+    {
+      title: "안전 가이드",
+      description: "제품 안전 사용 가이드",
+      fileName: null
+    },
+    {
+      title: "인증서",
+      description: "제품 인증 및 품질 인증서",
+      fileName: null
+    }
+  ],
+  
+  // ===== 연락처 정보 =====
+  contact: {
+    phone: "02-830-5803~4",
+    hours: "평일 09:00 ~ 18:00 (주말, 공휴일 휴무)",
+    address: "서울특별시 금천구 가산디지털2로 169-28    디지털산전협동화단지 A동",
+    email: "autofankorea@gmail.com",
+    mapLink: "https://map.naver.com/v5/search/서울특별시 금천구 가산디지털2로 169-28"
+  },
+  
+  // ===== A/S 문의 =====
+  support: {
+    contactInfoTitle: "고객센터 정보",
+    locationTitle: "오시는 길",
+    showInquiryBox: false,
+    inquiryTitle: "문의 방법",
+    inquiryDescription: "제품 A/S나 기술 지원이 필요하시면 아래 방법으로 문의해주세요.",
+    contactLabels: {
+      phone: "전화",
+      hours: "운영시간",
+      email: "이메일",
+      address: "주소"
+    },
+    emailSubject: "성일기전 A/S 문의",
+    emailBodyTemplate: "제품명: \n모델명: \n문의 내용: \n\n연락처: ",
+    requiredInfoTitle: "A/S 접수 시 필요한 정보",
+    requiredInfo: [
+      "제품명 및 모델명",
+      "구매일자 (또는 설치일자)",
+      "문제 증상 및 상황 설명",
+      "연락 가능한 전화번호",
+      "주소 (방문 A/S 시 필요)"
+    ],
+    clipboardSuccessMessage: "문의 템플릿이 클립보드에 복사되었습니다.",
+    clipboardFailMessage: "복사에 실패했습니다. 아래 템플릿을 수동으로 복사해주세요:",
+    clipboardRestrictionMessage: "※ HTTPS 환경이 아닌 경우 템플릿 복사 기능이 제한될 수 있습니다."
+  },
+  
+  // ===== UI 라벨 =====
+  ui: {
+    skipLink: "본문으로 건너뛰기",
+    menuToggle: "메뉴 열기",
+    footerContact: "연락처",
+    footerAddress: "주소",
+    buttons: {
+      learnMore: "더 알아보기",
+      viewAllProducts: "전체 제품 보기",
+      download: "다운로드",
+      emailInquiry: "이메일로 문의하기",
+      copyTemplate: "문의 템플릿 복사",
+      viewMap: "지도 보기"
+    },
+    status: {
+      imagePlaceholder: "이미지 준비중",
+      resourcePending: "자료 준비중"
+    },
+    footer: {
+      copyright: "&copy; 2024 성일기전. All rights reserved."
+    }
+  }
+};
+
+// 전역 변수로 노출 (app.js에서 사용)
+window.SITE_CONTENT = SITE_CONTENT;

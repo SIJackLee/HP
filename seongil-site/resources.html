@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="website">
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link"></a>
+  
+  <!-- 헤더 -->
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="logo" data-inject="companyName"></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="메뉴 열기">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="index.html" class="nav-link" data-page="index">홈</a></li>
+          <li><a href="about.html" class="nav-link" data-page="about">회사소개</a></li>
+          <li><a href="products.html" class="nav-link" data-page="products">제품소개</a></li>
+          <li><a href="resources.html" class="nav-link active" data-page="resources">자료실</a></li>
+          <li><a href="support.html" class="nav-link" data-page="support">A/S문의</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 메인 콘텐츠 -->
+  <main id="main-content">
+    <!-- 페이지 헤더 -->
+    <section class="page-hero">
+      <div class="container">
+        <h1 id="pageTitle"></h1>
+        <p id="pageSubtitle"></p>
+      </div>
+    </section>
+
+    <!-- 자료 목록 -->
+    <section class="section">
+      <div class="container">
+        <div style="max-width: 900px; margin: 0 auto;" id="resourcesContainer">
+          <!-- app.js에서 동적으로 생성 -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-grid">
+        <div class="footer-section">
+          <h3 data-inject="companyName"></h3>
+          <p data-inject="slogan"></p>
+        </div>
+        <div class="footer-section">
+          <h3 id="footerContactLabel"></h3>
+          <p>전화: <span data-inject="footerPhone"></span></p>
+          <p>이메일: <a href="#" data-inject="footerEmail"></a></p>
+        </div>
+        <div class="footer-section">
+          <h3 id="footerAddressLabel"></h3>
+          <p data-inject="footerAddress"></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-inject="footerCopyright"></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
