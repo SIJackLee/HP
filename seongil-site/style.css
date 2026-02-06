@@ -760,13 +760,49 @@ body {
 }
 
 .converter-note {
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   color: var(--muted);
   font-size: 0.95rem;
 }
 
 .converter-note strong {
   color: var(--brand-blue);
+}
+
+.converter-voltage-toggle {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  width: fit-content;
+}
+
+.converter-voltage-toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.converter-voltage-toggle label {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--surface);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.converter-voltage-toggle label:first-of-type {
+  border-right: 1px solid var(--border);
+}
+
+.converter-voltage-toggle input:checked + label {
+  background: var(--brand-blue);
+  color: #fff;
 }
 
 .converter-form {

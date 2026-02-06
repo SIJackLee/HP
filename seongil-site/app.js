@@ -376,13 +376,18 @@ function injectResourcesPage() {
   const pageSubtitle = document.getElementById('pageSubtitle');
   if (pageSubtitle) pageSubtitle.textContent = CONTENT.pages?.resources?.pageSubtitle || '';
   
-  // 암페어 → kW 변환기 (AC 단상 220V)
+  // 암페어 → kW 변환기 (AC 단상 220V / 380V 토글)
   const converterContainer = document.getElementById('ampWattConverterContainer');
   if (converterContainer) {
-    const V_AC = 220;
     converterContainer.innerHTML = `
       <div class="converter-card">
-        <p class="converter-note">AC 단상 <strong>220V</strong> 기준</p>
+        <p class="converter-note">AC 단상 기준</p>
+        <div class="converter-voltage-toggle" role="group" aria-label="전압 선택">
+          <input type="radio" id="converterVoltage220" name="converterVoltage" value="220" checked>
+          <label for="converterVoltage220">220V</label>
+          <input type="radio" id="converterVoltage380" name="converterVoltage" value="380">
+          <label for="converterVoltage380">380V</label>
+        </div>
         <form id="ampToKwForm" class="converter-form" novalidate>
           <label for="converterAmpere">전류 (A)</label>
           <input type="number" id="converterAmpere" name="ampere" min="0" step="any" placeholder="예: 5" inputmode="decimal" aria-describedby="converterResult">
@@ -394,7 +399,13 @@ function injectResourcesPage() {
     const form = document.getElementById('ampToKwForm');
     const inputAmpere = document.getElementById('converterAmpere');
     const resultEl = document.getElementById('converterResult');
+    const voltage220 = document.getElementById('converterVoltage220');
+    const voltage380 = document.getElementById('converterVoltage380');
     if (form && inputAmpere && resultEl) {
+      function getVoltage() {
+        if (voltage380 && voltage380.checked) return 380;
+        return 220;
+      }
       function updateResult() {
         const raw = inputAmpere.value.replace(/,/g, '').trim();
         if (raw === '') {
@@ -408,8 +419,9 @@ function injectResourcesPage() {
           resultEl.className = 'converter-result converter-result--error';
           return;
         }
-        const pKw = (V_AC * i) / 1000;
-        resultEl.textContent = `결과: ${pKw.toFixed(2)} kW`;
+        const v = getVoltage();
+        const pKw = (v * i) / 1000;
+        resultEl.textContent = `결과: ${pKw.toFixed(2)} kW (${v}V 기준)`;
         resultEl.className = 'converter-result converter-result--ok';
       }
       form.addEventListener('submit', function (e) {
@@ -418,6 +430,8 @@ function injectResourcesPage() {
       });
       inputAmpere.addEventListener('input', updateResult);
       inputAmpere.addEventListener('change', updateResult);
+      if (voltage220) voltage220.addEventListener('change', updateResult);
+      if (voltage380) voltage380.addEventListener('change', updateResult);
     }
   }
   
