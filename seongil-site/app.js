@@ -236,6 +236,8 @@ function injectAboutPage() {
   if (pageSubtitle) pageSubtitle.textContent = CONTENT.pages?.about?.pageSubtitle || '';
   
   // 대표이사 인삿말
+  const ceoGreetingLabel = document.getElementById('ceoGreetingLabel');
+  if (ceoGreetingLabel) ceoGreetingLabel.textContent = CONTENT.about?.ceoGreetingLabel || '';
   const ceoGreetingTitle = document.getElementById('ceoGreetingTitle');
   if (ceoGreetingTitle) ceoGreetingTitle.textContent = CONTENT.about?.ceoGreetingTitle || '';
   const ceoGreetingBody = document.getElementById('ceoGreetingBody');
@@ -303,12 +305,17 @@ function injectAboutPage() {
   
   const orgContainer = document.getElementById('organizationContainer');
   if (orgContainer && CONTENT.about?.organization) {
-    const deptList = CONTENT.about.organization.departments
-      .map(dept => `<li>${dept}</li>`)
-      .join('');
+    const org = CONTENT.about.organization;
+    const ceoEn = org.ceoEn ? `<div class="org-ceo-en">${org.ceoEn}</div>` : '';
+    const deptList = (org.departments || []).map(dept => {
+      if (typeof dept === 'object' && dept.ko != null) {
+        return `<li><span class="org-dept-ko">${dept.ko}</span><span class="org-dept-en">${dept.en || ''}</span></li>`;
+      }
+      return `<li><span class="org-dept-ko">${dept}</span></li>`;
+    }).join('');
     orgContainer.innerHTML = `
       <div class="org-chart">
-        <div class="org-ceo">${CONTENT.about.organization.ceo}</div>
+        <div class="org-ceo">${org.ceo}</div>${ceoEn}
         <ul class="org-departments">${deptList}</ul>
       </div>
     `;
