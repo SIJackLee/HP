@@ -459,12 +459,13 @@ body {
   font-size: 1.05rem;
 }
 
-/* 소개글 줄바꿈 표시 (홈·회사소개) */
+/* 소개글 줄바꿈 표시 및 중앙정렬 (홈·회사소개) */
 #aboutSectionText,
 #aboutParagraph1 {
   white-space: pre-line;
   line-height: 1.8;
   color: var(--text);
+  text-align: center;
 }
 
 /* 주소 줄바꿈 표시 (푸터·A/S 문의) */
