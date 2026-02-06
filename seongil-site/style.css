@@ -435,7 +435,7 @@ body {
   height: auto;
   border-radius: var(--radius);
   display: block;
-  box-shadow: var(--shadow);
+  box-shadow: none;
 }
 
 /* 글로벌 네트워크 - 국가 칩 컨테이너 */
