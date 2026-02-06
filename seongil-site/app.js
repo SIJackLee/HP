@@ -235,16 +235,6 @@ function injectAboutPage() {
   const pageSubtitle = document.getElementById('pageSubtitle');
   if (pageSubtitle) pageSubtitle.textContent = CONTENT.pages?.about?.pageSubtitle || '';
   
-  // 본문
-  const aboutP1 = document.getElementById('aboutParagraph1');
-  if (aboutP1) aboutP1.textContent = CONTENT.about?.paragraph1 || '';
-  
-  const aboutP2 = document.getElementById('aboutParagraph2');
-  if (aboutP2) aboutP2.textContent = CONTENT.about?.paragraph2 || '';
-  
-  const brandMessage = document.getElementById('brandMessage');
-  if (brandMessage) brandMessage.textContent = CONTENT.about?.brandMessage || '';
-  
   // 글로벌 네트워크
   const globalTitle = document.getElementById('globalNetworkTitle');
   if (globalTitle) globalTitle.textContent = CONTENT.about?.globalNetworkTitle || '';
@@ -252,7 +242,7 @@ function injectAboutPage() {
   const globalDesc = document.getElementById('globalNetworkDescription');
   if (globalDesc) globalDesc.textContent = CONTENT.about?.globalNetworkDescription || '';
   
-  // 글로벌 네트워크 지도 이미지
+  // 글로벌 네트워크 지도 이미지 (핀 없음)
   const globalMapWrap = document.getElementById('globalNetworkMapWrap');
   if (globalMapWrap) {
     const mapFileName = CONTENT.about?.globalMapImageFileName;
@@ -305,28 +295,40 @@ function injectAboutPage() {
     const deptList = CONTENT.about.organization.departments
       .map(dept => `<li>${dept}</li>`)
       .join('');
+    const orgIntro = (CONTENT.about?.brandMessage && CONTENT.about.brandMessage.trim())
+      ? `<p class="org-intro">${CONTENT.about.brandMessage.replace(/\n/g, '<br>')}</p>` : '';
     orgContainer.innerHTML = `
       <div class="org-chart">
         <div class="org-ceo">${CONTENT.about.organization.ceo}</div>
         <ul class="org-departments">${deptList}</ul>
       </div>
+      ${orgIntro}
     `;
   }
   
-  // 연혁
+  // 연혁 (상단에 paragraph1 문단 포함)
   const historyTitle = document.getElementById('historyTitle');
   if (historyTitle) historyTitle.textContent = CONTENT.about?.historyTitle || '';
   
   const historyContainer = document.getElementById('historyContainer');
-  if (historyContainer && CONTENT.about?.history) {
-    historyContainer.innerHTML = CONTENT.about.history
-      .map(item => `
-        <div class="history-item">
-          <div class="history-year">${item.year}</div>
-          <div class="history-event">${item.event}</div>
-        </div>
-      `)
-      .join('');
+  if (historyContainer) {
+    const historyIntro = (CONTENT.about?.paragraph1 && CONTENT.about.paragraph1.trim())
+      ? `<p class="history-intro">${CONTENT.about.paragraph1.replace(/\n/g, '<br>')}</p>` : '';
+    const timelineHtml = (CONTENT.about?.history && CONTENT.about.history.length)
+      ? CONTENT.about.history
+          .map(item => {
+            const events = Array.isArray(item.events) ? item.events : (item.event != null ? [item.event] : []);
+            const eventsHtml = events.map(ev => `<div class="history-event">${ev}</div>`).join('');
+            return `
+              <div class="history-item">
+                <div class="history-year">${item.year}</div>
+                <div class="history-events">${eventsHtml}</div>
+              </div>
+            `;
+          })
+          .join('')
+      : '';
+    historyContainer.innerHTML = historyIntro + timelineHtml;
   }
 }
 

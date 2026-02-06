@@ -143,6 +143,20 @@ const SITE_CONTENT = {
     globalNetworkDescription: "대표 브랜드인 SLF 오토휀(SLF Autofan)은 축종별 환경 조건에 최적화된 고효율 환기팬으로\n국내·외 많은 농장 고객들로부터 높은 신뢰를 받고 있으며, 유럽·중동·일본·동남아시아 등 다양한 국가에 수출하고 있습니다.",
     globalMapImageFileName: "global-map.png",
     globalCountries: ["일본", "중국", "헝가리", "베트남", "코스타리카", "남아프리카", "대만", "포루투칼", "스페인", "아르헨티나", "그리스", "호주"],
+    globalCountryPins: {
+      "일본": { x: 88, y: 32 },
+      "중국": { x: 78, y: 38 },
+      "헝가리": { x: 52, y: 28 },
+      "베트남": { x: 75, y: 48 },
+      "코스타리카": { x: 22, y: 45 },
+      "남아프리카": { x: 52, y: 72 },
+      "대만": { x: 82, y: 42 },
+      "포루투칼": { x: 45, y: 30 },
+      "스페인": { x: 45, y: 32 },
+      "아르헨티나": { x: 28, y: 72 },
+      "그리스": { x: 52, y: 32 },
+      "호주": { x: 82, y: 68 }
+    },
     coreValuesTitle: "5대 핵심 가치",
     coreValues: [
       { title: "신뢰와 책임", description: "고객과의 약속을 지키고\n책임감 있는 제품을 제공합니다.", icon: "🤝", iconImage: null },
@@ -163,15 +177,18 @@ const SITE_CONTENT = {
     },
     historyTitle: "회사 연혁",
     history: [
-      { year: "1996", event: "성일기전 회사 설립" },
-      { year: "1999", event: "환기팬 개발 및 일본 수출 시작" },
-      { year: "2000", event: "일본 해외 직 수출 개시" },
-      { year: "2001", event: "중국·대만 등 아시아 지역 수출 확대 및 직영지사 설립" },
-      { year: "2002", event: "유럽 CE 인증 획득" },
-      { year: "2003", event: "유럽 주요 환기·환경 기업들과 수출 계약 체결" },
-      { year: "2009", event: "대한민국 축산박람회 최우수 제품상 수상" },
-      { year: "2011", event: "중국 Tianjin Autofan Co., Ltd 현지 법인 설립" },
-      { year: "2012", event: "남미·유럽 등 해외 수출 확대" }
+      { year: "2022", events: ["4.20 주식회사 성일기전 설립 (구 성일기전)"] },
+      { year: "2023", events: ["11월 AC모터 CE인증"] },
+      { year: "2024", events: ["7월 9시리즈 컨트롤러 KST (한국전파시험연구소) 인증 및 방송통신기자재 등록"] },
+      { year: "2025", events: [
+        "4월 BLDC(SLB) 디자인 등록",
+        "5월 BLDC모터 KTC시험",
+        "9월 농림축산식품부장관상",
+        "9월 BLDC모터 CE인증",
+        "12월 주식회사 성일기전 연구전담부서 설립",
+        "12월 축평원 기업등록"
+      ]},
+      { year: "2026", events: ["BLDC KC인증 예정"] }
     ]
   },
   
