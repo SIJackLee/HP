@@ -82,6 +82,10 @@ body {
   padding: 0 20px;
 }
 
+.container--narrow {
+  max-width: 720px;
+}
+
 /* Section */
 .section {
   padding: 60px 0;
@@ -530,6 +534,40 @@ body {
   border-radius: var(--radius);
   margin: 3rem 0;
   border-left: 4px solid var(--brand-blue);
+}
+
+.ceo-greeting {
+  text-align: center;
+}
+
+.ceo-greeting__title {
+  font-size: 1.75rem;
+  color: var(--brand-blue);
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.ceo-greeting__body {
+  text-align: left;
+  line-height: 1.9;
+  color: var(--text);
+}
+
+.ceo-greeting__body p {
+  margin-bottom: 1.25rem;
+}
+
+.ceo-greeting__sign {
+  margin-top: 2.5rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: right;
+}
+
+.location-address {
+  margin-bottom: 1rem;
+  color: var(--muted);
+  white-space: pre-line;
 }
 
 #brandMessage {

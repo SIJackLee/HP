@@ -235,6 +235,17 @@ function injectAboutPage() {
   const pageSubtitle = document.getElementById('pageSubtitle');
   if (pageSubtitle) pageSubtitle.textContent = CONTENT.pages?.about?.pageSubtitle || '';
   
+  // 대표이사 인삿말
+  const ceoGreetingTitle = document.getElementById('ceoGreetingTitle');
+  if (ceoGreetingTitle) ceoGreetingTitle.textContent = CONTENT.about?.ceoGreetingTitle || '';
+  const ceoGreetingBody = document.getElementById('ceoGreetingBody');
+  if (ceoGreetingBody && CONTENT.about?.ceoGreetingBody) {
+    const paragraphs = CONTENT.about.ceoGreetingBody.split(/\n\n+/).filter(Boolean);
+    ceoGreetingBody.innerHTML = paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+  }
+  const ceoGreetingSign = document.getElementById('ceoGreetingSign');
+  if (ceoGreetingSign) ceoGreetingSign.textContent = CONTENT.about?.ceoGreetingSign || '';
+  
   // 글로벌 네트워크
   const globalTitle = document.getElementById('globalNetworkTitle');
   if (globalTitle) globalTitle.textContent = CONTENT.about?.globalNetworkTitle || '';
@@ -324,6 +335,17 @@ function injectAboutPage() {
           .join('')
       : '';
     historyContainer.innerHTML = timelineHtml;
+  }
+  
+  // 오시는 길
+  const aboutLocationTitle = document.getElementById('aboutLocationTitle');
+  if (aboutLocationTitle) aboutLocationTitle.textContent = CONTENT.about?.locationTitle || '';
+  const aboutLocationAddress = document.getElementById('aboutLocationAddress');
+  if (aboutLocationAddress) aboutLocationAddress.textContent = CONTENT.contact?.address || '';
+  const aboutMapLink = document.getElementById('aboutMapLink');
+  if (aboutMapLink) {
+    aboutMapLink.textContent = CONTENT.ui?.buttons?.viewMap || '';
+    aboutMapLink.href = CONTENT.contact?.mapLink || '#';
   }
 }
 
@@ -511,19 +533,6 @@ function injectSupportPage() {
   
   const contactAddress = document.getElementById('contactAddress');
   if (contactAddress) contactAddress.textContent = CONTENT.contact?.address || '';
-  
-  // 오시는 길
-  const locationTitle = document.getElementById('locationTitle');
-  if (locationTitle) locationTitle.textContent = CONTENT.support?.locationTitle || '';
-  
-  const locationAddress = document.getElementById('locationAddress');
-  if (locationAddress) locationAddress.textContent = CONTENT.contact?.address || '';
-  
-  const mapLink = document.getElementById('mapLink');
-  if (mapLink) {
-    mapLink.textContent = CONTENT.ui?.buttons?.viewMap || '';
-    mapLink.href = CONTENT.contact?.mapLink || '#';
-  }
   
   // 문의 방법 섹션은 HTML에서 제거됨
   // showInquiryBox 플래그로 제어 가능하지만 기본값 false
