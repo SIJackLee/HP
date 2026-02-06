@@ -359,9 +359,32 @@ function injectAboutPage() {
   }
   const mapEmbedWrap = document.getElementById('aboutMapEmbedWrap');
   if (mapEmbedWrap) {
+    const clientId = (CONTENT.contact?.mapApiClientId || '').trim();
+    const center = CONTENT.contact?.mapCenter;
     const query = CONTENT.contact?.mapEmbedQuery || (CONTENT.contact?.address || '').replace(/\n/g, ' ').trim();
-    if (query) {
-      const iframe = document.createElement('iframe');
+
+    if (clientId && center && center.lat != null && center.lng != null) {
+      var mapDiv = document.createElement('div');
+      mapDiv.id = 'aboutNaverMap';
+      mapDiv.className = 'location-map-iframe';
+      mapEmbedWrap.appendChild(mapDiv);
+      var script = document.createElement('script');
+      script.src = 'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=' + encodeURIComponent(clientId);
+      script.onload = function () {
+        if (window.naver && window.naver.maps && mapDiv.parentNode) {
+          var latLng = new naver.maps.LatLng(center.lat, center.lng);
+          var map = new naver.maps.Map(mapDiv, {
+            center: latLng,
+            zoom: 16,
+            zoomControl: true,
+            zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT }
+          });
+          new naver.maps.Marker({ position: latLng, map: map });
+        }
+      };
+      document.head.appendChild(script);
+    } else if (query) {
+      var iframe = document.createElement('iframe');
       iframe.title = '오시는 길 지도';
       iframe.src = 'https://map.naver.com/v5/embed/search?query=' + encodeURIComponent(query);
       iframe.className = 'location-map-iframe';

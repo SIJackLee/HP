@@ -282,7 +282,9 @@ const SITE_CONTENT = {
     address: "서울특별시 금천구 가산디지털2로 169-28\n디지털산전협동화단지 A동",
     email: "autofankorea@gmail.com",
     mapLink: "https://map.naver.com/v5/search/서울특별시 금천구 가산디지털2로 169-28",
-    mapEmbedQuery: "서울특별시 금천구 가산디지털2로 169-28"
+    mapEmbedQuery: "서울특별시 금천구 가산디지털2로 169-28",
+    mapCenter: { lat: 37.4782, lng: 126.8819 },
+    mapApiClientId: "" // 입력 시 네이버 지도 API로 실제 지도+주소 마커 표시 (네이버 클라우드 플랫폼에서 발급)
   },
   
   // ===== A/S 문의 =====
