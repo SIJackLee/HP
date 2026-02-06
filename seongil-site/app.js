@@ -356,12 +356,23 @@ function injectAboutPage() {
     aboutMapLink.textContent = mapLabel;
     aboutMapLink.href = mapHref;
   }
-  const aboutMapLinkArea = document.getElementById('aboutMapLinkArea');
-  if (aboutMapLinkArea) {
-    aboutMapLinkArea.href = mapHref;
+  const mapEmbedWrap = document.getElementById('aboutMapEmbedWrap');
+  if (mapEmbedWrap) {
+    const query = CONTENT.contact?.mapEmbedQuery || (CONTENT.contact?.address || '').replace(/\n/g, ' ').trim();
+    if (query) {
+      const iframe = document.createElement('iframe');
+      iframe.title = '오시는 길 지도';
+      iframe.src = 'https://map.naver.com/v5/embed/search?query=' + encodeURIComponent(query);
+      iframe.className = 'location-map-iframe';
+      iframe.loading = 'lazy';
+      mapEmbedWrap.appendChild(iframe);
+    }
   }
-  const aboutMapLinkLabel = document.getElementById('aboutMapLinkLabel');
-  if (aboutMapLinkLabel) aboutMapLinkLabel.textContent = mapLabel;
+  const aboutMapLinkOpen = document.getElementById('aboutMapLinkOpen');
+  if (aboutMapLinkOpen) {
+    aboutMapLinkOpen.textContent = mapLabel;
+    aboutMapLinkOpen.href = mapHref;
+  }
 }
 
 // 제품소개 페이지 주입
