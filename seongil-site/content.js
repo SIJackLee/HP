@@ -176,18 +176,18 @@ const SITE_CONTENT = {
   // ===== 제품 정보 =====
   products: [
     {
-      name: "SLF 오토휀",
-      description: "축종별 환경 조건에 최적화된 고효율 환기팬",
+      name: "환기용 배기휀",
+      description: "다양한 타입과 사이즈가 있습니다.",
       imageFileName: "slf-autofan.png" // assets/products/ 폴더에 이미지 넣고 파일명 입력
     },
     {
-      name: "환기 컨트롤러",
-      description: "스마트 축사 환경 제어 시스템",
+      name: "휀 컨트롤러",
+      description: "커스텀 제작이 가능합니다.",
       imageFileName: "ventilation-controller.png"
     },
     {
-      name: "환기 시스템",
-      description: "통합 환기 솔루션",
+      name: "악세사리",
+      description: "후드와 샷타(제작가능)이 있습니다.",
       imageFileName: "ventilation-system.png"
     },
     {
