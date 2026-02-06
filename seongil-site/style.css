@@ -150,6 +150,10 @@ body {
   white-space: pre-line;
 }
 
+#globalNetworkDescription {
+  white-space: pre-line;
+}
+
 /* Accent Line (선택적) */
 .accent-line {
   width: 60px;
