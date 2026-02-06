@@ -173,10 +173,11 @@ const SITE_CONTENT = {
     organization: {
       ceo: "대표이사",
       departments: [
-        "제조생산부",
-        "행정지원부",
-        "기업부설연구소",
-        "영업부"
+        "경영지원부 (Management Support Division)",
+        "기술연구소 (Technology Research Institute)",
+        "기술지원부 (Technical Support Division)",
+        "제조기술부 (Manufacturing Technology Division)",
+        "생산관리부 (Production Control Division)"
       ]
     },
     historyTitle: "회사 연혁",
