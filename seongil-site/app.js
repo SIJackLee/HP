@@ -252,6 +252,20 @@ function injectAboutPage() {
   const globalDesc = document.getElementById('globalNetworkDescription');
   if (globalDesc) globalDesc.textContent = CONTENT.about?.globalNetworkDescription || '';
   
+  // 글로벌 네트워크 지도 이미지
+  const globalMapWrap = document.getElementById('globalNetworkMapWrap');
+  if (globalMapWrap) {
+    const mapFileName = CONTENT.about?.globalMapImageFileName;
+    if (mapFileName) {
+      const img = document.createElement('img');
+      img.src = `assets/images/${encodeURIComponent(mapFileName)}`;
+      img.alt = "글로벌 네트워크 지도";
+      img.className = "global-network-map";
+      img.loading = "lazy";
+      globalMapWrap.appendChild(img);
+    }
+  }
+  
   // 국가 칩 리스트
   const globalList = document.getElementById('globalCountriesList');
   if (globalList && CONTENT.about?.globalCountries) {
@@ -267,13 +281,18 @@ function injectAboutPage() {
   const valuesContainer = document.getElementById('coreValuesContainer');
   if (valuesContainer && CONTENT.about?.coreValues) {
     valuesContainer.innerHTML = CONTENT.about.coreValues
-      .map((value, index) => `
+      .map((value) => {
+        const iconHtml = value.iconImage
+          ? `<img src="assets/core-values/${encodeURIComponent(value.iconImage)}" alt="${(value.title || '').replace(/"/g, '&quot;')}" class="value-icon-img" loading="lazy">`
+          : (value.icon ? `<span class="value-icon-emoji">${value.icon}</span>` : '');
+        return `
         <div class="value-card">
-          <div class="value-icon">${value.icon || ''}</div>
+          <div class="value-icon">${iconHtml}</div>
           <h3>${value.title}</h3>
           <p>${value.description}</p>
         </div>
-      `)
+      `;
+      })
       .join('');
   }
   
@@ -356,6 +375,51 @@ function injectResourcesPage() {
   
   const pageSubtitle = document.getElementById('pageSubtitle');
   if (pageSubtitle) pageSubtitle.textContent = CONTENT.pages?.resources?.pageSubtitle || '';
+  
+  // 암페어 → kW 변환기 (AC 단상 220V)
+  const converterContainer = document.getElementById('ampWattConverterContainer');
+  if (converterContainer) {
+    const V_AC = 220;
+    converterContainer.innerHTML = `
+      <div class="converter-card">
+        <p class="converter-note">AC 단상 <strong>220V</strong> 기준</p>
+        <form id="ampToKwForm" class="converter-form" novalidate>
+          <label for="converterAmpere">전류 (A)</label>
+          <input type="number" id="converterAmpere" name="ampere" min="0" step="any" placeholder="예: 5" inputmode="decimal" aria-describedby="converterResult">
+          <button type="submit" class="btn btn-primary">변환</button>
+        </form>
+        <p id="converterResult" class="converter-result" aria-live="polite"></p>
+      </div>
+    `;
+    const form = document.getElementById('ampToKwForm');
+    const inputAmpere = document.getElementById('converterAmpere');
+    const resultEl = document.getElementById('converterResult');
+    if (form && inputAmpere && resultEl) {
+      function updateResult() {
+        const raw = inputAmpere.value.replace(/,/g, '').trim();
+        if (raw === '') {
+          resultEl.textContent = '';
+          resultEl.className = 'converter-result';
+          return;
+        }
+        const i = parseFloat(raw);
+        if (Number.isNaN(i) || i < 0) {
+          resultEl.textContent = '전류(A)에 올바른 숫자를 입력하세요.';
+          resultEl.className = 'converter-result converter-result--error';
+          return;
+        }
+        const pKw = (V_AC * i) / 1000;
+        resultEl.textContent = `결과: ${pKw.toFixed(2)} kW`;
+        resultEl.className = 'converter-result converter-result--ok';
+      }
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        updateResult();
+      });
+      inputAmpere.addEventListener('input', updateResult);
+      inputAmpere.addEventListener('change', updateResult);
+    }
+  }
   
   // 자료 목록
   const resourcesContainer = document.getElementById('resourcesContainer');

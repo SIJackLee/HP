@@ -36,7 +36,7 @@
  *    - paragraph1, paragraph2: 본문 문단
  *    - brandMessage: 브랜드 메시지
  *    - globalNetworkTitle, globalNetworkDescription, globalCountries: 글로벌 네트워크
- *    - coreValuesTitle, coreValues: 5대 핵심 가치
+ *    - coreValuesTitle, coreValues: 5대 핵심 가치 (icon: 이모티콘, iconImage: 이미지 파일명이면 assets/core-values/ 사용)
  *    - organizationTitle, organization: 조직도
  *    - historyTitle, history: 회사 연혁
  * 
@@ -140,14 +140,15 @@ const SITE_CONTENT = {
     brandMessage: "성일기전은 '끊임없는 변화, 더불어 하는 발전'이라는 가치 아래 농장·환경·자연과의 공생을 실현하고자 노력합니다. 고효율 팬, 스마트 컨트롤러, 내구성이 높은 엔지니어링 소재를 기반으로 농장의 생산성과 동물의 편안함을 함께 향상시키는 솔루션을 제공합니다.",
     globalNetworkTitle: "글로벌 네트워크",
     globalNetworkDescription: "성일기전의 제품은 전 세계 다양한 국가에서 신뢰받고 있습니다.",
+    globalMapImageFileName: "global-map.png",
     globalCountries: ["한국", "일본", "캐나다", "호주", "태국", "스페인", "러시아", "우크라이나", "터키"],
     coreValuesTitle: "5대 핵심 가치",
     coreValues: [
-      { title: "신뢰와 책임", description: "고객과의 약속을 지키고 책임감 있는 제품을 제공합니다.", icon: "🤝" },
-      { title: "고객 중심", description: "고객의 요구사항을 최우선으로 고려합니다.", icon: "👥" },
-      { title: "혁신 정신", description: "지속적인 연구개발로 기술 혁신을 추구합니다.", icon: "💡" },
-      { title: "도전적 실행", description: "새로운 시장과 기회에 적극적으로 도전합니다.", icon: "🎯" },
-      { title: "글로벌 지향", description: "세계 시장을 향한 지속적인 확장을 추구합니다.", icon: "🌍" }
+      { title: "신뢰와 책임", description: "고객과의 약속을 지키고 책임감 있는 제품을 제공합니다.", icon: "🤝", iconImage: null },
+      { title: "고객 중심", description: "고객의 요구사항을 최우선으로 고려합니다.", icon: "👥", iconImage: null },
+      { title: "혁신 정신", description: "지속적인 연구개발로 기술 혁신을 추구합니다.", icon: "💡", iconImage: null },
+      { title: "도전적 실행", description: "새로운 시장과 기회에 적극적으로 도전합니다.", icon: "🎯", iconImage: null },
+      { title: "글로벌 지향", description: "세계 시장을 향한 지속적인 확장을 추구합니다.", icon: "🌍", iconImage: null }
     ],
     organizationTitle: "조직도",
     organization: {

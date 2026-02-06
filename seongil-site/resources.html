@@ -44,11 +44,23 @@
       </div>
     </section>
 
-    <!-- 자료 목록 -->
-    <section class="section">
+    <!-- 자료실: 왼쪽 변환기, 오른쪽 자료 목록 -->
+    <section class="section" aria-labelledby="converterTitle">
       <div class="container">
-        <div style="max-width: 900px; margin: 0 auto;" id="resourcesContainer">
-          <!-- app.js에서 동적으로 생성 -->
+        <div class="resources-two-col">
+          <div class="resources-two-col__left">
+            <h2 id="converterTitle" class="section-title">암페어·kW 변환기</h2>
+            <p class="section-subtitle">AC 단상 220V 기준으로 전류(A)를 소비전력(kW)으로 변환합니다.</p>
+            <div id="ampWattConverterContainer" class="converter-wrap">
+              <!-- app.js에서 폼·결과 주입 -->
+            </div>
+          </div>
+          <div class="resources-two-col__right">
+            <h2 class="section-title section-title--small">다운로드 자료</h2>
+            <div id="resourcesContainer" class="resources-list-wrap">
+              <!-- app.js에서 동적으로 생성 -->
+            </div>
+          </div>
         </div>
       </div>
     </section>
