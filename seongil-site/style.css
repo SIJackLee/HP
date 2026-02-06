@@ -457,8 +457,21 @@ body {
 .about-content p {
   margin-bottom: 1.5rem;
   font-size: 1.05rem;
+}
+
+/* 소개글 줄바꿈 표시 (홈·회사소개) */
+#aboutSectionText,
+#aboutParagraph1 {
+  white-space: pre-line;
   line-height: 1.8;
   color: var(--text);
+}
+
+/* 주소 줄바꿈 표시 (푸터·A/S 문의) */
+[data-inject="footerAddress"],
+#contactAddress,
+#locationAddress {
+  white-space: pre-line;
 }
 
 .brand-message {
