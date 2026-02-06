@@ -59,10 +59,18 @@
     <!-- 오시는 길 -->
     <section class="section">
       <div class="container">
-        <div class="contact-card">
-          <h2 class="section-title" id="aboutLocationTitle"></h2>
-          <p class="location-address" id="aboutLocationAddress"></p>
-          <a href="#" id="aboutMapLink" class="map-link" target="_blank" rel="noopener noreferrer"></a>
+        <h2 class="section-title" id="aboutLocationTitle"></h2>
+        <div class="location-two-col">
+          <div class="location-two-col__left">
+            <p class="location-address" id="aboutLocationAddress"></p>
+            <a href="#" id="aboutMapLink" class="map-link map-link--button" target="_blank" rel="noopener noreferrer"></a>
+          </div>
+          <div class="location-two-col__right">
+            <a href="#" id="aboutMapLinkArea" class="location-map-area" target="_blank" rel="noopener noreferrer" aria-label="지도 보기">
+              <span class="location-map-area__pin" aria-hidden="true"></span>
+              <span class="location-map-area__label" id="aboutMapLinkLabel"></span>
+            </a>
+          </div>
         </div>
       </div>
     </section>

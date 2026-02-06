@@ -349,11 +349,19 @@ function injectAboutPage() {
   if (aboutLocationTitle) aboutLocationTitle.textContent = CONTENT.about?.locationTitle || '';
   const aboutLocationAddress = document.getElementById('aboutLocationAddress');
   if (aboutLocationAddress) aboutLocationAddress.textContent = CONTENT.contact?.address || '';
+  const mapHref = CONTENT.contact?.mapLink || '#';
+  const mapLabel = CONTENT.ui?.buttons?.viewMap || '지도 보기';
   const aboutMapLink = document.getElementById('aboutMapLink');
   if (aboutMapLink) {
-    aboutMapLink.textContent = CONTENT.ui?.buttons?.viewMap || '';
-    aboutMapLink.href = CONTENT.contact?.mapLink || '#';
+    aboutMapLink.textContent = mapLabel;
+    aboutMapLink.href = mapHref;
   }
+  const aboutMapLinkArea = document.getElementById('aboutMapLinkArea');
+  if (aboutMapLinkArea) {
+    aboutMapLinkArea.href = mapHref;
+  }
+  const aboutMapLinkLabel = document.getElementById('aboutMapLinkLabel');
+  if (aboutMapLinkLabel) aboutMapLinkLabel.textContent = mapLabel;
 }
 
 // 제품소개 페이지 주입
