@@ -111,7 +111,8 @@ const SITE_CONTENT = {
       ogTitle: "자료실 - 성일기전",
       ogDescription: "성일기전의 제품 카탈로그, 설치 가이드, 기술 자료를 다운로드하실 수 있습니다.",
       pageTitle: "자료실",
-      pageSubtitle: "제품 카탈로그, 설치 가이드, 기술 자료를 다운로드하실 수 있습니다."
+      pageSubtitle: "제품 카탈로그, 설치 가이드, 기술 자료를 다운로드하실 수 있습니다.",
+      converterSubtitle: "AC 단상 220V / 380V 기준으로\n전류(A)를 소비전력(kW)으로 변환합니다."
     },
     support: {
       title: "A/S 문의 - 성일기전",
@@ -136,19 +137,19 @@ const SITE_CONTENT = {
   // ===== 회사소개 페이지 =====
   about: {
     paragraph1: "성일기전은 1996년 설립 이래, 축사 환경을 기반으로 한 환기 시스템 및 컨트롤러 개발에 전념해 온 축산 환기 전문 기업입니다.\n오랜 노하우와 현장 경험을 바탕으로, 축사 내부의 쾌적한 환경과 동물복지를 실현하는 데 필수적인 환기 솔루션을 제공하고 있습니다.",
-    paragraph2: "대표 브랜드인 SLF 오토휀(SLF Autofan)은 축종별 환경 조건에 최적화된 고효율 환기팬으로 국내·외 많은 농장 고객들로부터 높은 신뢰를 받고 있으며, 유럽·중동·일본·동남아시아 등 다양한 국가에 수출하고 있습니다.",
-    brandMessage: "성일기전은 '끊임없는 변화, 더불어 하는 발전'이라는 가치 아래 농장·환경·자연과의 공생을 실현하고자 노력합니다. 고효율 팬, 스마트 컨트롤러, 내구성이 높은 엔지니어링 소재를 기반으로 농장의 생산성과 동물의 편안함을 함께 향상시키는 솔루션을 제공합니다.",
+    paragraph2: "대표 브랜드인 SLF 오토휀(SLF Autofan)은 축종별 환경 조건에 최적화된 고효율 환기팬으로\n국내·외 많은 농장 고객들로부터 높은 신뢰를 받고 있으며, 유럽·중동·일본·동남아시아 등 다양한 국가에 수출하고 있습니다.",
+    brandMessage: "성일기전은 '끊임없는 변화, 더불어 하는 발전'이라는 가치 아래 농장·환경·자연과의 공생을 실현하고자 노력합니다.\n고효율 팬, 스마트 컨트롤러, 내구성이 높은 엔지니어링 소재를 기반으로 농장의 생산성과 동물의 편안함을 함께 향상시키는 솔루션을 제공합니다.",
     globalNetworkTitle: "글로벌 네트워크",
     globalNetworkDescription: "성일기전의 제품은 전 세계 다양한 국가에서 신뢰받고 있습니다.",
     globalMapImageFileName: "global-map.png",
-    globalCountries: ["한국", "일본", "캐나다", "호주", "태국", "스페인", "러시아", "우크라이나", "터키"],
+    globalCountries: ["일본", "중국", "헝가리", "베트남", "코스타리카", "남아프리카", "대만", "포루투칼", "스페인", "아르헨티나", "그리스", "호주"],
     coreValuesTitle: "5대 핵심 가치",
     coreValues: [
-      { title: "신뢰와 책임", description: "고객과의 약속을 지키고 책임감 있는 제품을 제공합니다.", icon: "🤝", iconImage: null },
-      { title: "고객 중심", description: "고객의 요구사항을 최우선으로 고려합니다.", icon: "👥", iconImage: null },
-      { title: "혁신 정신", description: "지속적인 연구개발로 기술 혁신을 추구합니다.", icon: "💡", iconImage: null },
-      { title: "도전적 실행", description: "새로운 시장과 기회에 적극적으로 도전합니다.", icon: "🎯", iconImage: null },
-      { title: "글로벌 지향", description: "세계 시장을 향한 지속적인 확장을 추구합니다.", icon: "🌍", iconImage: null }
+      { title: "신뢰와 책임", description: "고객과의 약속을 지키고\n책임감 있는 제품을 제공합니다.", icon: "🤝", iconImage: null },
+      { title: "고객 중심", description: "고객의 요구사항을\n최우선으로 고려합니다.", icon: "👥", iconImage: null },
+      { title: "혁신 정신", description: "지속적인 연구개발로\n기술 혁신을 추구합니다.", icon: "💡", iconImage: null },
+      { title: "도전적 실행", description: "새로운 시장과 기회에\n적극적으로 도전합니다.", icon: "🎯", iconImage: null },
+      { title: "글로벌 지향", description: "세계 시장을 향한\n지속적인 확장을 추구합니다.", icon: "🌍", iconImage: null }
     ],
     organizationTitle: "조직도",
     organization: {

@@ -376,6 +376,9 @@ function injectResourcesPage() {
   const pageSubtitle = document.getElementById('pageSubtitle');
   if (pageSubtitle) pageSubtitle.textContent = CONTENT.pages?.resources?.pageSubtitle || '';
   
+  const converterSubtitle = document.getElementById('converterSubtitle');
+  if (converterSubtitle) converterSubtitle.textContent = CONTENT.pages?.resources?.converterSubtitle || '';
+  
   // 암페어 → kW 변환기 (AC 단상 220V / 380V 토글)
   const converterContainer = document.getElementById('ampWattConverterContainer');
   if (converterContainer) {
