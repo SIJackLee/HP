@@ -295,25 +295,20 @@ function injectAboutPage() {
     const deptList = CONTENT.about.organization.departments
       .map(dept => `<li>${dept}</li>`)
       .join('');
-    const orgIntro = (CONTENT.about?.brandMessage && CONTENT.about.brandMessage.trim())
-      ? `<p class="org-intro">${CONTENT.about.brandMessage.replace(/\n/g, '<br>')}</p>` : '';
     orgContainer.innerHTML = `
       <div class="org-chart">
         <div class="org-ceo">${CONTENT.about.organization.ceo}</div>
         <ul class="org-departments">${deptList}</ul>
       </div>
-      ${orgIntro}
     `;
   }
   
-  // 연혁 (상단에 paragraph1 문단 포함)
+  // 연혁
   const historyTitle = document.getElementById('historyTitle');
   if (historyTitle) historyTitle.textContent = CONTENT.about?.historyTitle || '';
   
   const historyContainer = document.getElementById('historyContainer');
   if (historyContainer) {
-    const historyIntro = (CONTENT.about?.paragraph1 && CONTENT.about.paragraph1.trim())
-      ? `<p class="history-intro">${CONTENT.about.paragraph1.replace(/\n/g, '<br>')}</p>` : '';
     const timelineHtml = (CONTENT.about?.history && CONTENT.about.history.length)
       ? CONTENT.about.history
           .map(item => {
@@ -328,7 +323,7 @@ function injectAboutPage() {
           })
           .join('')
       : '';
-    historyContainer.innerHTML = historyIntro + timelineHtml;
+    historyContainer.innerHTML = timelineHtml;
   }
 }
 
