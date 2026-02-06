@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
       break;
     case 'about':
       injectAboutPage();
+      initAboutSubpages();
       break;
     case 'products':
       injectProductsPage();
@@ -372,6 +373,61 @@ function injectAboutPage() {
   if (aboutMapLinkOpen) {
     aboutMapLinkOpen.textContent = mapLabel;
     aboutMapLinkOpen.href = mapHref;
+  }
+
+  // 서브페이지 네비게이션
+  const subpageNavList = document.getElementById('aboutSubpageNavList');
+  if (subpageNavList && CONTENT.about?.subpageNav?.length) {
+    subpageNavList.innerHTML = CONTENT.about.subpageNav
+      .map(function (item) {
+        return '<li><a href="#' + item.id + '" class="about-subpage-nav__link" data-subpage="' + item.id + '">' + item.label + '</a></li>';
+      })
+      .join('');
+  }
+}
+
+// 회사소개 서브페이지 전환 (첫 진입 시 대표이사 인삿말, hash로 이동)
+function initAboutSubpages() {
+  const validIds = ['greeting', 'location', 'global', 'values', 'organization', 'history'];
+  function getSubpageIdFromHash() {
+    const hash = (window.location.hash || '').replace(/^#/, '');
+    return validIds.indexOf(hash) >= 0 ? hash : 'greeting';
+  }
+  function showSubpage(id) {
+    const panels = document.querySelectorAll('.about-subpage');
+    const links = document.querySelectorAll('.about-subpage-nav__link');
+    panels.forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-subpage') === id);
+    });
+    links.forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-subpage') === id);
+    });
+  }
+  function applyHash() {
+    const id = getSubpageIdFromHash();
+    if (window.location.hash !== '#' + id) {
+      window.location.hash = id;
+    }
+    showSubpage(id);
+  }
+  if (!window.location.hash || validIds.indexOf(window.location.hash.replace(/^#/, '')) < 0) {
+    window.location.hash = 'greeting';
+  }
+  applyHash();
+  window.addEventListener('hashchange', applyHash);
+  const nav = document.getElementById('aboutSubpageNav');
+  if (nav) {
+    nav.addEventListener('click', function (e) {
+      const link = e.target.closest('.about-subpage-nav__link');
+      if (link) {
+        e.preventDefault();
+        const id = link.getAttribute('data-subpage');
+        if (id) {
+          window.location.hash = id;
+          showSubpage(id);
+        }
+      }
+    });
   }
 }
 

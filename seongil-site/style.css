@@ -110,6 +110,59 @@ body {
   opacity: 0.95;
 }
 
+/* 회사소개 서브페이지 네비게이션 */
+.about-subpage-nav {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0;
+}
+
+.about-subpage-nav__list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 1rem 20px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-subpage-nav__link {
+  display: block;
+  padding: 0.6rem 1.25rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: var(--radius);
+  transition: color 0.2s, background 0.2s;
+}
+
+.about-subpage-nav__link:hover {
+  color: var(--brand-blue);
+  background: var(--brand-gradient-soft);
+}
+
+.about-subpage-nav__link.active {
+  color: var(--brand-blue);
+  background: rgba(31, 74, 168, 0.1);
+  font-weight: 600;
+}
+
+.about-subpages {
+  min-height: 200px;
+}
+
+.about-subpage {
+  display: none;
+}
+
+.about-subpage.active {
+  display: block;
+}
+
 /* Hero (홈페이지 메인) */
 .hero {
   background: var(--brand-gradient);
