@@ -401,6 +401,74 @@ function injectProductsPage() {
   }
 }
 
+// 암페어 → kW 변환기 공통 주입 (자료실 / A/S문의)
+function injectAmpWattConverter(containerId, titleId, subtitleId) {
+  const converterContainer = document.getElementById(containerId);
+  if (!converterContainer) return;
+  if (titleId) {
+    const titleEl = document.getElementById(titleId);
+    if (titleEl) titleEl.textContent = '암페어·kW 변환기';
+  }
+  if (subtitleId) {
+    const subtitleEl = document.getElementById(subtitleId);
+    if (subtitleEl) subtitleEl.textContent = CONTENT.pages?.resources?.converterSubtitle || '';
+  }
+  converterContainer.innerHTML = `
+    <div class="converter-card">
+      <p class="converter-note">AC 단상 기준</p>
+      <div class="converter-voltage-toggle" role="group" aria-label="전압 선택">
+        <input type="radio" id="converterVoltage220" name="converterVoltage" value="220" checked>
+        <label for="converterVoltage220">220V</label>
+        <input type="radio" id="converterVoltage380" name="converterVoltage" value="380">
+        <label for="converterVoltage380">380V</label>
+      </div>
+      <form id="ampToKwForm" class="converter-form" novalidate>
+        <label for="converterAmpere">전류 (A)</label>
+        <input type="number" id="converterAmpere" name="ampere" min="0" step="any" placeholder="예: 5" inputmode="decimal" aria-describedby="converterResult">
+        <button type="submit" class="btn btn-primary">변환</button>
+      </form>
+      <p id="converterResult" class="converter-result" aria-live="polite"></p>
+    </div>
+  `;
+  const form = document.getElementById('ampToKwForm');
+  const inputAmpere = document.getElementById('converterAmpere');
+  const resultEl = document.getElementById('converterResult');
+  const voltage220 = document.getElementById('converterVoltage220');
+  const voltage380 = document.getElementById('converterVoltage380');
+  if (form && inputAmpere && resultEl) {
+    function getVoltage() {
+      if (voltage380 && voltage380.checked) return 380;
+      return 220;
+    }
+    function updateResult() {
+      const raw = inputAmpere.value.replace(/,/g, '').trim();
+      if (raw === '') {
+        resultEl.textContent = '';
+        resultEl.className = 'converter-result';
+        return;
+      }
+      const i = parseFloat(raw);
+      if (Number.isNaN(i) || i < 0) {
+        resultEl.textContent = '전류(A)에 올바른 숫자를 입력하세요.';
+        resultEl.className = 'converter-result converter-result--error';
+        return;
+      }
+      const v = getVoltage();
+      const pKw = (v * i) / 1000;
+      resultEl.textContent = `결과: ${pKw.toFixed(2)} kW (${v}V 기준)`;
+      resultEl.className = 'converter-result converter-result--ok';
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      updateResult();
+    });
+    inputAmpere.addEventListener('input', updateResult);
+    inputAmpere.addEventListener('change', updateResult);
+    if (voltage220) voltage220.addEventListener('change', updateResult);
+    if (voltage380) voltage380.addEventListener('change', updateResult);
+  }
+}
+
 // 자료실 페이지 주입
 function injectResourcesPage() {
   // 페이지 헤더
@@ -410,67 +478,7 @@ function injectResourcesPage() {
   const pageSubtitle = document.getElementById('pageSubtitle');
   if (pageSubtitle) pageSubtitle.textContent = CONTENT.pages?.resources?.pageSubtitle || '';
   
-  const converterSubtitle = document.getElementById('converterSubtitle');
-  if (converterSubtitle) converterSubtitle.textContent = CONTENT.pages?.resources?.converterSubtitle || '';
-  
-  // 암페어 → kW 변환기 (AC 단상 220V / 380V 토글)
-  const converterContainer = document.getElementById('ampWattConverterContainer');
-  if (converterContainer) {
-    converterContainer.innerHTML = `
-      <div class="converter-card">
-        <p class="converter-note">AC 단상 기준</p>
-        <div class="converter-voltage-toggle" role="group" aria-label="전압 선택">
-          <input type="radio" id="converterVoltage220" name="converterVoltage" value="220" checked>
-          <label for="converterVoltage220">220V</label>
-          <input type="radio" id="converterVoltage380" name="converterVoltage" value="380">
-          <label for="converterVoltage380">380V</label>
-        </div>
-        <form id="ampToKwForm" class="converter-form" novalidate>
-          <label for="converterAmpere">전류 (A)</label>
-          <input type="number" id="converterAmpere" name="ampere" min="0" step="any" placeholder="예: 5" inputmode="decimal" aria-describedby="converterResult">
-          <button type="submit" class="btn btn-primary">변환</button>
-        </form>
-        <p id="converterResult" class="converter-result" aria-live="polite"></p>
-      </div>
-    `;
-    const form = document.getElementById('ampToKwForm');
-    const inputAmpere = document.getElementById('converterAmpere');
-    const resultEl = document.getElementById('converterResult');
-    const voltage220 = document.getElementById('converterVoltage220');
-    const voltage380 = document.getElementById('converterVoltage380');
-    if (form && inputAmpere && resultEl) {
-      function getVoltage() {
-        if (voltage380 && voltage380.checked) return 380;
-        return 220;
-      }
-      function updateResult() {
-        const raw = inputAmpere.value.replace(/,/g, '').trim();
-        if (raw === '') {
-          resultEl.textContent = '';
-          resultEl.className = 'converter-result';
-          return;
-        }
-        const i = parseFloat(raw);
-        if (Number.isNaN(i) || i < 0) {
-          resultEl.textContent = '전류(A)에 올바른 숫자를 입력하세요.';
-          resultEl.className = 'converter-result converter-result--error';
-          return;
-        }
-        const v = getVoltage();
-        const pKw = (v * i) / 1000;
-        resultEl.textContent = `결과: ${pKw.toFixed(2)} kW (${v}V 기준)`;
-        resultEl.className = 'converter-result converter-result--ok';
-      }
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        updateResult();
-      });
-      inputAmpere.addEventListener('input', updateResult);
-      inputAmpere.addEventListener('change', updateResult);
-      if (voltage220) voltage220.addEventListener('change', updateResult);
-      if (voltage380) voltage380.addEventListener('change', updateResult);
-    }
-  }
+  injectAmpWattConverter('ampWattConverterContainer', 'converterTitle', 'converterSubtitle');
   
   // 자료 목록
   const resourcesContainer = document.getElementById('resourcesContainer');
@@ -548,6 +556,9 @@ function injectSupportPage() {
   
   const contactAddress = document.getElementById('contactAddress');
   if (contactAddress) contactAddress.textContent = CONTENT.contact?.address || '';
+  
+  // 암페어·kW 변환기 (고객센터 바로 아래)
+  injectAmpWattConverter('supportAmpWattConverterContainer', 'supportConverterTitle', 'supportConverterSubtitle');
   
   // 문의 방법 섹션은 HTML에서 제거됨
   // showInquiryBox 플래그로 제어 가능하지만 기본값 false
