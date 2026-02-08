@@ -347,7 +347,7 @@ function injectAboutPage() {
   const aboutMapLink = document.getElementById('aboutMapLink');
   if (aboutMapLink) {
     aboutMapLink.textContent = mapLabel;
-    aboutMapLink.href = mapHref;
+    aboutMapLink.href = ensureHttps(mapHref);
   }
   const mapEmbedWrap = document.getElementById('aboutMapEmbedWrap');
   if (mapEmbedWrap) {
@@ -399,7 +399,7 @@ function injectAboutPage() {
         
         var iframe = document.createElement('iframe');
         iframe.title = '오시는 길 지도';
-        iframe.src = iframeSrc;
+        iframe.src = ensureHttps(iframeSrc);
         iframe.className = 'location-map-iframe';
         iframe.loading = 'lazy';
         mapEmbedWrap.appendChild(iframe);
@@ -414,7 +414,7 @@ function injectAboutPage() {
         
         var iframe = document.createElement('iframe');
         iframe.title = '오시는 길 지도';
-        iframe.src = 'https://map.naver.com/v5/embed/search?query=' + encodeURIComponent(finalQuery);
+        iframe.src = ensureHttps('https://map.naver.com/v5/embed/search?query=' + encodeURIComponent(finalQuery));
         iframe.className = 'location-map-iframe';
         iframe.loading = 'lazy';
         mapEmbedWrap.appendChild(iframe);
@@ -542,7 +542,7 @@ function injectAboutPage() {
         
         var iframe = document.createElement('iframe');
         iframe.title = '오시는 길 지도';
-        iframe.src = iframeSrc;
+        iframe.src = ensureHttps(iframeSrc);
         iframe.className = 'location-map-iframe';
         iframe.loading = 'lazy';
         mapEmbedWrap.appendChild(iframe);
@@ -557,11 +557,18 @@ function injectAboutPage() {
       
       var iframe = document.createElement('iframe');
       iframe.title = '오시는 길 지도';
-      iframe.src = 'https://map.naver.com/v5/embed/search?query=' + encodeURIComponent(finalQuery);
+      iframe.src = ensureHttps('https://map.naver.com/v5/embed/search?query=' + encodeURIComponent(finalQuery));
       iframe.className = 'location-map-iframe';
       iframe.loading = 'lazy';
       mapEmbedWrap.appendChild(iframe);
     }
+  }
+
+  function ensureHttps(url) {
+    if (!url) return url;
+    if (url.startsWith('//')) return 'https:' + url;
+    if (url.startsWith('http://')) return 'https://' + url.slice('http://'.length);
+    return url;
   }
 
   // 서브페이지 네비게이션
