@@ -916,6 +916,52 @@ body {
   border-radius: 2px;
 }
 
+.history-zigzag-container {
+  margin-top: 2.5rem;
+}
+
+.history-zigzag {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.history-zigzag-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.history-zigzag-row--reverse {
+  direction: rtl;
+}
+
+.history-zigzag-row--reverse .history-zigzag-card {
+  direction: ltr;
+}
+
+.history-zigzag-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  min-height: 140px;
+}
+
+.history-zigzag-year {
+  font-weight: 700;
+  color: var(--brand-blue);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.history-zigzag-event {
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
 .history-item {
   position: relative;
   padding: 0.25rem 0 2rem 1.5rem;
@@ -1520,6 +1566,10 @@ body {
   .countries-chip-container {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .history-zigzag-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
@@ -1603,6 +1653,10 @@ body {
   .countries-chip-container {
     grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
+  }
+
+  .history-zigzag-row {
+    grid-template-columns: 1fr;
   }
 
   .country-tag {

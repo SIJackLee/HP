@@ -336,6 +336,15 @@ function injectAboutPage() {
       historyContainer.innerHTML = '';
     }
   }
+  const historyZigzagContainer = document.getElementById('historyZigzagContainer');
+  if (historyZigzagContainer) {
+    const history = CONTENT.about?.history || [];
+    if (history.length > 0) {
+      renderZigzagHistory(historyZigzagContainer, history);
+    } else {
+      historyZigzagContainer.innerHTML = '';
+    }
+  }
   
   // 오시는 길
   const aboutLocationTitle = document.getElementById('aboutLocationTitle');
@@ -1038,6 +1047,50 @@ function renderLinearHistory(container, historyData) {
   container.innerHTML = `
     <div class="history-line">
       ${timelineHtml}
+    </div>
+  `;
+}
+
+function renderZigzagHistory(container, historyData) {
+  if (!container || !historyData || historyData.length === 0) return;
+
+  const chunkSize = 5;
+  const rows = [];
+  for (let i = 0; i < historyData.length; i += chunkSize) {
+    rows.push(historyData.slice(i, i + chunkSize));
+  }
+
+  const rowsHtml = rows
+    .map((row, rowIndex) => {
+      const cardsHtml = row
+        .map(item => {
+          const events = Array.isArray(item.events)
+            ? item.events
+            : (item.event != null ? [item.event] : []);
+          const eventsHtml = events
+            .map(ev => `<div class="history-zigzag-event">${ev}</div>`)
+            .join('');
+          return `
+            <div class="history-zigzag-card">
+              <div class="history-zigzag-year">${item.year}</div>
+              <div class="history-zigzag-events">${eventsHtml}</div>
+            </div>
+          `;
+        })
+        .join('');
+
+      const rowClass = rowIndex % 2 === 1 ? ' history-zigzag-row--reverse' : '';
+      return `
+        <div class="history-zigzag-row${rowClass}">
+          ${cardsHtml}
+        </div>
+      `;
+    })
+    .join('');
+
+  container.innerHTML = `
+    <div class="history-zigzag">
+      ${rowsHtml}
     </div>
   `;
 }
