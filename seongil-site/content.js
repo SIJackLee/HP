@@ -296,32 +296,22 @@ const SITE_CONTENT = {
     {
       title: "제품 카탈로그",
       description: "성일기전 제품 전체 카탈로그",
-      fileName: null // assets/resources/ 폴더에 PDF 넣고 파일명 입력
+      fileName: "카달로그.pdf"
     },
     {
-      title: "설치 가이드",
-      description: "환기팬 설치 및 사용 가이드",
-      fileName: null
+      title: "오토팬 브로셔",
+      description: "오토팬 제품 소개 브로셔",
+      fileName: "오토팬_브로셔.pdf"
     },
     {
-      title: "기술 자료",
-      description: "제품 기술 사양서",
-      fileName: null
+      title: "블레온 브로셔",
+      description: "블레온(BLEON) 브랜드 소개 브로셔",
+      fileName: "블레온_브로셔.pdf"
     },
     {
-      title: "유지보수 매뉴얼",
-      description: "제품 유지보수 및 점검 가이드",
-      fileName: null
-    },
-    {
-      title: "안전 가이드",
-      description: "제품 안전 사용 가이드",
-      fileName: null
-    },
-    {
-      title: "인증서",
-      description: "제품 인증 및 품질 인증서",
-      fileName: null
+      title: "성일기전 소개 자료",
+      description: "회사 및 제품 소개 프레젠테이션",
+      fileName: "성일기전_PPT.pdf"
     }
   ],
   
