@@ -379,7 +379,7 @@ function injectAboutPage() {
           // 네이버 지도 v5 embed - place ID 사용
           // place ID를 사용하면 해당 장소를 정확히 중심으로 표시
           // 줌 레벨 15: 구/동 단위 (넓은 범위)
-          iframeSrc = 'https://map.naver.com/v5/embed/place/' + naverMapPlaceId.trim() + 
+          iframeSrc = 'https://map.naver.com/p/embed/place/' + naverMapPlaceId.trim() + 
                       '?c=15.00,0,0,0,dh';
         } else {
           // place ID가 없으면 검색 쿼리 + 좌표 사용
@@ -392,7 +392,7 @@ function injectAboutPage() {
           // query: 검색창에 기본으로 표시될 검색어 및 자동 검색 실행
           // c: 지도 중심 좌표 및 줌 레벨 (경도,위도,줌레벨,0,0,0,dh)
           // 줌 레벨 15: 구/동 단위 (넓은 범위)
-          iframeSrc = 'https://map.naver.com/v5/embed/search?query=' + 
+          iframeSrc = 'https://map.naver.com/p/embed/search?query=' + 
                       encodeURIComponent(searchParam) + 
                       '&c=' + center.lng + ',' + center.lat + ',15,0,0,0,dh';
         }
@@ -414,7 +414,7 @@ function injectAboutPage() {
         
         var iframe = document.createElement('iframe');
         iframe.title = '오시는 길 지도';
-        iframe.src = ensureHttps('https://map.naver.com/v5/embed/search?query=' + encodeURIComponent(finalQuery));
+        iframe.src = ensureHttps('https://map.naver.com/p/embed/search?query=' + encodeURIComponent(finalQuery));
         iframe.className = 'location-map-iframe';
         iframe.loading = 'lazy';
         mapEmbedWrap.appendChild(iframe);
@@ -536,7 +536,7 @@ function injectAboutPage() {
         // 네이버 지도 v5 embed URL 생성 (검색어 + 좌표)
         // query: 검색창에 기본으로 표시될 검색어
         // c: 지도 중심 좌표 및 줌 레벨 (경도,위도,줌레벨,0,0,0,dh)
-        var iframeSrc = 'https://map.naver.com/v5/embed/search?query=' + 
+        var iframeSrc = 'https://map.naver.com/p/embed/search?query=' + 
                         encodeURIComponent(searchQuery) + 
                         '&c=' + center.lng + ',' + center.lat + ',15,0,0,0,dh';
         
@@ -557,7 +557,7 @@ function injectAboutPage() {
       
       var iframe = document.createElement('iframe');
       iframe.title = '오시는 길 지도';
-      iframe.src = ensureHttps('https://map.naver.com/v5/embed/search?query=' + encodeURIComponent(finalQuery));
+      iframe.src = ensureHttps('https://map.naver.com/p/embed/search?query=' + encodeURIComponent(finalQuery));
       iframe.className = 'location-map-iframe';
       iframe.loading = 'lazy';
       mapEmbedWrap.appendChild(iframe);
