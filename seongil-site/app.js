@@ -328,21 +328,13 @@ function injectAboutPage() {
   
   const historyContainer = document.getElementById('historyContainer');
   if (historyContainer) {
-    const timelineHtml = (CONTENT.about?.history && CONTENT.about.history.length)
-      ? CONTENT.about.history
-          .map(item => {
-            const events = Array.isArray(item.events) ? item.events : (item.event != null ? [item.event] : []);
-            const eventsHtml = events.map(ev => `<div class="history-event">${ev}</div>`).join('');
-            return `
-              <div class="history-item">
-                <div class="history-year">${item.year}</div>
-                <div class="history-events">${eventsHtml}</div>
-              </div>
-            `;
-          })
-          .join('')
-      : '';
-    historyContainer.innerHTML = timelineHtml;
+    const history = CONTENT.about?.history || [];
+    if (history.length > 0) {
+      // 1자(직선) 타임라인 렌더링
+      renderLinearHistory(historyContainer, history);
+    } else {
+      historyContainer.innerHTML = '';
+    }
   }
   
   // 오시는 길
@@ -359,43 +351,217 @@ function injectAboutPage() {
   }
   const mapEmbedWrap = document.getElementById('aboutMapEmbedWrap');
   if (mapEmbedWrap) {
-    const clientId = (CONTENT.contact?.mapApiClientId || '').trim();
-    const center = CONTENT.contact?.mapCenter;
+    // 성일기전 주소 좌표로 고정
+    const center = CONTENT.contact?.mapCenter || { lat: 37.4782, lng: 126.8819 };
     const query = CONTENT.contact?.mapEmbedQuery || (CONTENT.contact?.address || '').replace(/\n/g, ' ').trim();
+    const kakaoApiKey = (CONTENT.contact?.kakaoMapApiKey || '').trim();
+    const useNaverMap = CONTENT.contact?.useNaverMap !== false; // 기본값: true (네이버 지도 사용)
+    const naverMapSearch = CONTENT.contact?.naverMapDefaultSearch || CONTENT.basicInfo?.companyName || '성일기전';
+    const naverMapPlaceId = CONTENT.contact?.naverMapPlaceId || ''; // 네이버 지도 place ID
 
-    if (clientId && center && center.lat != null && center.lng != null) {
+    // 네이버 지도 사용 설정이 true이거나 카카오맵 API 키가 없으면 네이버 지도 사용
+    if (useNaverMap || !kakaoApiKey) {
+      // 네이버 지도 iframe 사용 (API 키 불필요, 기본 검색어: 성일기전)
+      if (center && center.lat != null && center.lng != null) {
+        useNaverMapIframe();
+      } else if (query) {
+        useNaverMapIframeWithQuery();
+      }
+      
+      // 네이버 지도 iframe 함수들
+      function useNaverMapIframe() {
+        // 네이버 지도 iframe 사용 (API 키 불필요)
+        // place ID를 사용하여 성일기전을 정확히 중심으로 표시
+        var iframeSrc;
+        
+        // place ID가 있으면 place ID 사용 (가장 정확함)
+        if (naverMapPlaceId && naverMapPlaceId.trim() !== '') {
+          // 네이버 지도 v5 embed - place ID 사용
+          // place ID를 사용하면 해당 장소를 정확히 중심으로 표시
+          // 줌 레벨 15: 구/동 단위 (넓은 범위)
+          iframeSrc = 'https://map.naver.com/v5/embed/place/' + naverMapPlaceId.trim() + 
+                      '?c=15.00,0,0,0,dh';
+        } else {
+          // place ID가 없으면 검색 쿼리 + 좌표 사용
+          var searchQuery = naverMapSearch; // 기본 검색어: "성일기전"
+          var address = CONTENT.contact?.address || '';
+          var fullAddress = address.replace(/\n/g, ' ').trim(); // 주소를 한 줄로 변환
+          var searchParam = fullAddress || searchQuery;
+          
+          // 네이버 지도 v5 embed URL 생성 (검색어 + 좌표)
+          // query: 검색창에 기본으로 표시될 검색어 및 자동 검색 실행
+          // c: 지도 중심 좌표 및 줌 레벨 (경도,위도,줌레벨,0,0,0,dh)
+          // 줌 레벨 15: 구/동 단위 (넓은 범위)
+          iframeSrc = 'https://map.naver.com/v5/embed/search?query=' + 
+                      encodeURIComponent(searchParam) + 
+                      '&c=' + center.lng + ',' + center.lat + ',15,0,0,0,dh';
+        }
+        
+        var iframe = document.createElement('iframe');
+        iframe.title = '오시는 길 지도';
+        iframe.src = iframeSrc;
+        iframe.className = 'location-map-iframe';
+        iframe.loading = 'lazy';
+        mapEmbedWrap.appendChild(iframe);
+      }
+      
+      function useNaverMapIframeWithQuery() {
+        // 좌표가 없을 때는 검색 쿼리만 사용
+        var searchQuery = naverMapSearch; // 기본 검색어: "성일기전"
+        
+        // 검색어가 있으면 사용, 없으면 기본 검색어 사용
+        var finalQuery = query || searchQuery;
+        
+        var iframe = document.createElement('iframe');
+        iframe.title = '오시는 길 지도';
+        iframe.src = 'https://map.naver.com/v5/embed/search?query=' + encodeURIComponent(finalQuery);
+        iframe.className = 'location-map-iframe';
+        iframe.loading = 'lazy';
+        mapEmbedWrap.appendChild(iframe);
+      }
+    } else if (center && center.lat != null && center.lng != null) {
+      // 카카오맵 사용 (useNaverMap이 false이고 카카오맵 API 키가 있을 때)
+      // 지도 컨테이너 생성
       var mapDiv = document.createElement('div');
-      mapDiv.id = 'aboutNaverMap';
+      mapDiv.id = 'aboutKakaoMap';
       mapDiv.className = 'location-map-iframe';
       mapEmbedWrap.appendChild(mapDiv);
-      var script = document.createElement('script');
-      script.src = 'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=' + encodeURIComponent(clientId);
-      script.onload = function () {
-        if (window.naver && window.naver.maps && mapDiv.parentNode) {
-          var latLng = new naver.maps.LatLng(center.lat, center.lng);
-          var map = new naver.maps.Map(mapDiv, {
-            center: latLng,
-            zoom: 16,
-            zoomControl: true,
-            zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT }
+      
+      // 카카오맵 API 키가 있으면 카카오맵 사용, 없으면 iframe 사용
+      if (kakaoApiKey && typeof kakao !== 'undefined' && kakao.maps) {
+        initKakaoMap();
+      } else if (kakaoApiKey) {
+        // 카카오맵 API가 아직 로드되지 않았으면 대기
+        var checkKakao = setInterval(function() {
+          if (typeof kakao !== 'undefined' && kakao.maps) {
+            clearInterval(checkKakao);
+            initKakaoMap();
+          }
+        }, 100);
+        
+        // 5초 후 타임아웃
+        setTimeout(function() {
+          clearInterval(checkKakao);
+          if (typeof kakao === 'undefined' || !kakao.maps) {
+            console.error('카카오맵 API가 로드되지 않았습니다. API 키를 확인하세요.');
+            // API 키가 없거나 로드 실패 시 iframe 사용
+            useIframeFallback();
+          }
+        }, 5000);
+      } else {
+        // API 키가 없으면 iframe 사용
+        useIframeFallback();
+      }
+      
+      function initKakaoMap() {
+        // 카카오맵 초기화 (완전 고정)
+        var mapContainer = document.getElementById('aboutKakaoMap');
+        var mapOption = {
+          center: new kakao.maps.LatLng(center.lat, center.lng),
+          level: 3, // 지도의 확대 레벨
+          scrollwheel: false,        // 마우스 휠 비활성화
+          disableDoubleClick: true,  // 더블클릭 줌 비활성화
+          disableDoubleClickZoom: true,
+          draggable: false            // 드래그 이동 비활성화
+        };
+        
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+        
+        // 커스텀 HTML 마커 생성 (성일기전 브랜드 색상 적용)
+        var companyName = CONTENT.basicInfo?.companyName || '성일기전';
+        var address = CONTENT.contact?.address || '';
+        var phone = CONTENT.contact?.phone || '';
+        
+        // 커스텀 마커 이미지 생성
+        var markerPosition = new kakao.maps.LatLng(center.lat, center.lng);
+        
+        // HTML 마커를 위한 커스텀 오버레이
+        var customOverlay = new kakao.maps.CustomOverlay({
+          position: markerPosition,
+          content: [
+            '<div style="',
+            'background: linear-gradient(270deg, #16a34a 0%, #1f4aa8 100%);',
+            'color: white;',
+            'padding: 10px 16px;',
+            'border-radius: 24px;',
+            'font-weight: 600;',
+            'font-size: 0.95rem;',
+            'box-shadow: 0 4px 12px rgba(0,0,0,0.25);',
+            'white-space: nowrap;',
+            'cursor: pointer;',
+            '">',
+            companyName,
+            '</div>'
+          ].join(''),
+          yAnchor: 1
+        });
+        
+        customOverlay.setMap(map);
+        
+        // 인포윈도우 생성
+        var iwContent = [
+          '<div style="padding: 15px; max-width: 280px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", Roboto, sans-serif;">',
+          '<h3 style="margin: 0 0 10px 0; color: #1f4aa8; font-size: 1.15rem; font-weight: 700;">' + companyName + '</h3>',
+          '<p style="margin: 0 0 8px 0; font-size: 0.9rem; line-height: 1.6; color: #111827;">' + address.replace(/\n/g, '<br>') + '</p>',
+          phone ? '<p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #6b7280;">전화: ' + phone + '</p>' : '',
+          '</div>'
+        ].join('');
+        
+        var infowindow = new kakao.maps.InfoWindow({
+          content: iwContent
+        });
+        
+        // 커스텀 오버레이 클릭 시 인포윈도우 토글
+        var overlayElement = customOverlay.getContent();
+        if (overlayElement) {
+          overlayElement.addEventListener('click', function() {
+            if (infowindow.getMap()) {
+              infowindow.close();
+            } else {
+              infowindow.open(map, markerPosition);
+            }
           });
-          new naver.maps.Marker({ position: latLng, map: map });
         }
-      };
-      document.head.appendChild(script);
+        
+        // 지도 로드 시 인포윈도우 자동 표시 (선택적)
+        // infowindow.open(map, markerPosition);
+      }
+      
+      function useIframeFallback() {
+        // 네이버 지도 iframe 사용 (API 키 불필요)
+        // 검색 쿼리 + 좌표 조합: 검색창에 "성일기전" 기본 표시, 좌표로 정확한 위치 표시
+        var companyName = CONTENT.basicInfo?.companyName || '성일기전';
+        var searchQuery = companyName; // 기본 검색어: "성일기전"
+        
+        // 네이버 지도 v5 embed URL 생성 (검색어 + 좌표)
+        // query: 검색창에 기본으로 표시될 검색어
+        // c: 지도 중심 좌표 및 줌 레벨 (경도,위도,줌레벨,0,0,0,dh)
+        var iframeSrc = 'https://map.naver.com/v5/embed/search?query=' + 
+                        encodeURIComponent(searchQuery) + 
+                        '&c=' + center.lng + ',' + center.lat + ',15,0,0,0,dh';
+        
+        var iframe = document.createElement('iframe');
+        iframe.title = '오시는 길 지도';
+        iframe.src = iframeSrc;
+        iframe.className = 'location-map-iframe';
+        iframe.loading = 'lazy';
+        mapEmbedWrap.appendChild(iframe);
+      }
     } else if (query) {
+      // 좌표가 없을 때는 검색 쿼리만 사용
+      var companyName = CONTENT.basicInfo?.companyName || '성일기전';
+      var searchQuery = companyName; // 기본 검색어: "성일기전"
+      
+      // 검색어가 있으면 사용, 없으면 회사명 사용
+      var finalQuery = query || searchQuery;
+      
       var iframe = document.createElement('iframe');
       iframe.title = '오시는 길 지도';
-      iframe.src = 'https://map.naver.com/v5/embed/search?query=' + encodeURIComponent(query);
+      iframe.src = 'https://map.naver.com/v5/embed/search?query=' + encodeURIComponent(finalQuery);
       iframe.className = 'location-map-iframe';
       iframe.loading = 'lazy';
       mapEmbedWrap.appendChild(iframe);
     }
-  }
-  const aboutMapLinkOpen = document.getElementById('aboutMapLinkOpen');
-  if (aboutMapLinkOpen) {
-    aboutMapLinkOpen.textContent = mapLabel;
-    aboutMapLinkOpen.href = mapHref;
   }
 
   // 서브페이지 네비게이션
@@ -467,13 +633,13 @@ function injectProductsPage() {
   const productsContainer = document.getElementById('productsContainer');
   if (productsContainer && CONTENT.products) {
     productsContainer.innerHTML = CONTENT.products
-      .map(product => {
+      .map((product, index) => {
         const imageSrc = product.imageFileName 
           ? `assets/products/${encodeURIComponent(product.imageFileName)}`
           : null;
         
         return `
-          <div class="product-card">
+          <div class="product-card" data-product-index="${index}" style="cursor: pointer;">
             <div class="product-image">
               ${imageSrc 
                 ? `<img src="${imageSrc}" alt="${product.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'placeholder\\'>${CONTENT.ui?.status?.imagePlaceholder || ''}</div>'">`
@@ -488,7 +654,117 @@ function injectProductsPage() {
         `;
       })
       .join('');
+    
+    // 제품 카드 클릭 이벤트 등록
+    const productCards = productsContainer.querySelectorAll('.product-card');
+    productCards.forEach(card => {
+      card.addEventListener('click', function() {
+        const productIndex = parseInt(this.getAttribute('data-product-index'));
+        if (!isNaN(productIndex) && CONTENT.products[productIndex]) {
+          showProductSpecModal(CONTENT.products[productIndex]);
+        }
+      });
+    });
   }
+  
+  // 제품 스펙 모달 생성 (페이지에 한 번만)
+  if (!document.getElementById('productSpecModal')) {
+    createProductSpecModal();
+  }
+}
+
+// 제품 스펙 모달 생성
+function createProductSpecModal() {
+  const modal = document.createElement('div');
+  modal.id = 'productSpecModal';
+  modal.className = 'product-spec-modal';
+  modal.innerHTML = `
+    <div class="product-spec-modal__overlay"></div>
+    <div class="product-spec-modal__content">
+      <button class="product-spec-modal__close" aria-label="닫기">&times;</button>
+      <div class="product-spec-modal__header">
+        <h2 class="product-spec-modal__title"></h2>
+      </div>
+      <div class="product-spec-modal__body">
+        <div class="product-spec-modal__image"></div>
+        <div class="product-spec-modal__description"></div>
+        <div class="product-spec-modal__specs"></div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  
+  // 모달 닫기 이벤트
+  const overlay = modal.querySelector('.product-spec-modal__overlay');
+  const closeBtn = modal.querySelector('.product-spec-modal__close');
+  
+  function closeModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  
+  overlay.addEventListener('click', closeModal);
+  closeBtn.addEventListener('click', closeModal);
+  
+  // ESC 키로 닫기
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closeModal();
+    }
+  });
+}
+
+// 제품 스펙 모달 표시
+function showProductSpecModal(product) {
+  const modal = document.getElementById('productSpecModal');
+  if (!modal) return;
+  
+  const titleEl = modal.querySelector('.product-spec-modal__title');
+  const imageEl = modal.querySelector('.product-spec-modal__image');
+  const descriptionEl = modal.querySelector('.product-spec-modal__description');
+  const specsEl = modal.querySelector('.product-spec-modal__specs');
+  
+  // 제품명
+  if (titleEl) titleEl.textContent = product.name || '';
+  
+  // 제품 이미지
+  if (imageEl) {
+    if (product.imageFileName) {
+      const imageSrc = `assets/products/${encodeURIComponent(product.imageFileName)}`;
+      imageEl.innerHTML = `<img src="${imageSrc}" alt="${product.name}" loading="lazy">`;
+    } else {
+      imageEl.innerHTML = `<div class="placeholder">${CONTENT.ui?.status?.imagePlaceholder || ''}</div>`;
+    }
+  }
+  
+  // 제품 설명
+  if (descriptionEl) {
+    descriptionEl.textContent = product.description || '';
+  }
+  
+  // 제품 스펙
+  if (specsEl && product.specs) {
+    const specsHtml = Object.entries(product.specs)
+      .map(([key, value]) => `
+        <div class="product-spec-item">
+          <dt class="product-spec-item__key">${key}</dt>
+          <dd class="product-spec-item__value">${value}</dd>
+        </div>
+      `)
+      .join('');
+    specsEl.innerHTML = `
+      <h3 class="product-spec-modal__specs-title">제품 사양</h3>
+      <dl class="product-spec-list">
+        ${specsHtml}
+      </dl>
+    `;
+  } else if (specsEl) {
+    specsEl.innerHTML = '<p class="product-spec-modal__no-specs">제품 사양 정보가 없습니다.</p>';
+  }
+  
+  // 모달 표시
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
 // 암페어 → kW 변환기 공통 주입 (자료실 / A/S문의)
@@ -567,8 +843,6 @@ function injectResourcesPage() {
   
   const pageSubtitle = document.getElementById('pageSubtitle');
   if (pageSubtitle) pageSubtitle.textContent = CONTENT.pages?.resources?.pageSubtitle || '';
-  
-  injectAmpWattConverter('ampWattConverterContainer', 'converterTitle', 'converterSubtitle');
   
   // 자료 목록
   const resourcesContainer = document.getElementById('resourcesContainer');
@@ -728,3 +1002,39 @@ function initMobileMenu() {
     });
   }
 }
+
+/**
+ * 곡선형 성장 경로 타임라인 초기화
+ * S자 곡선 형태의 SVG path와 연도별 노드, 카드를 생성합니다.
+ */
+function renderLinearHistory(container, historyData) {
+  if (!container || !historyData || historyData.length === 0) return;
+
+  const timelineHtml = historyData
+    .map(item => {
+      const events = Array.isArray(item.events)
+        ? item.events
+        : (item.event != null ? [item.event] : []);
+      const eventsHtml = events
+        .map(ev => `<div class="history-event">${ev}</div>`)
+        .join('');
+
+      return `
+        <div class="history-item">
+          <div class="history-year">${item.year}</div>
+          <div class="history-events">${eventsHtml}</div>
+        </div>
+      `;
+    })
+    .join('');
+
+  container.innerHTML = `
+    <div class="history-line">
+      ${timelineHtml}
+    </div>
+  `;
+}
+
+/**
+ * 타임라인 애니메이션 초기화
+ */
