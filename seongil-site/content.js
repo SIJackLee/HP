@@ -52,6 +52,7 @@
  * 
  * 7. contact: 연락처 정보
  *    - phone, hours, address, email, mapLink
+ *    - locationDirections: 오시는 길 안내 (addressLabel, publicTransportLabel, busStopsLabel, busStops[{name, walkMinutes, buses}], privateCarLabel, navigationInput, parkingInfo, alightingLabel, alightingSteps[])
  * 
  * 8. support: A/S 문의 관련
  *    - contactInfoTitle, locationTitle, inquiryTitle: 섹션 제목
@@ -201,16 +202,16 @@ const SITE_CONTENT = {
       { year: "2009", events: ["대한민국 축산박람회 최우수 제품상 수상"] },
       { year: "2011", events: ["중국 Tianjin Autofan Co., Ltd 현지 법인 설립"] },
       { year: "2012", events: ["남미·유럽 등 해외 수출 확대"] },
-      { year: "2022", events: ["4.20 주식회사 성일기전 설립 (구 성일기전)"] },
-      { year: "2023", events: ["11월 AC모터 CE인증"] },
-      { year: "2024", events: ["7월 9시리즈 컨트롤러 KST (한국전파시험연구소) 인증 및 방송통신기자재 등록"] },
+      { year: "2022", events: ["주식회사 성일기전 설립 (구 성일기전)"] },
+      { year: "2023", events: ["AC모터 CE인증"] },
+      { year: "2024", events: ["9시리즈 컨트롤러 KST (한국전파시험연구소) 인증 및 방송통신기자재 등록"] },
       { year: "2025", events: [
-        "4월 BLDC(SLB) 디자인 등록",
-        "5월 BLDC모터 KTC시험",
-        "9월 농림축산식품부장관상",
-        "9월 BLDC모터 CE인증",
-        "12월 주식회사 성일기전 연구전담부서 설립",
-        "12월 축평원 기업등록"
+        "BLDC(SLB) 디자인 등록",
+        "BLDC모터 KTC시험",
+        "농림축산식품부장관상",
+        "BLDC모터 CE인증",
+        "주식회사 성일기전 연구전담부서 설립",
+        "축평원 기업등록"
       ]},
       { year: "2026", events: ["BLDC KC인증 예정"] }
     ]
@@ -324,8 +325,23 @@ const SITE_CONTENT = {
     mapLink: "https://map.naver.com/v5/search/서울특별시 금천구 가산디지털2로 169-28",
     mapEmbedQuery: "서울특별시 금천구 가산디지털2로 169-28",
     mapCenter: { lat: 37.4782, lng: 126.8819 },
-    kakaoMapApiKey: "", // 카카오맵 API 키 (카카오 개발자 센터에서 발급) - 입력 시 카카오맵 사용
-    useNaverMap: true, // true: 네이버 지도 사용 (기본 검색어: 성일기전), false: 카카오맵 사용
+    locationDirections: {
+      addressLabel: "주소",
+      publicTransportLabel: "대중교통 이용 시",
+      busStopsLabel: "가장 가까운 버스 정류장",
+      busStops: [
+        { name: "디지털3단지.롯데이노베이트", walkMinutes: null, buses: ["부천75", "서울571", "서울652", "서울653", "서울5012", "서울5528"] },
+        { name: "디지털3단지운동장 정류장", walkMinutes: "3", buses: ["광명21", "서울653", "서울5012", "서울5528"] },
+        { name: "디씨아이(데이터센터)", walkMinutes: null, buses: ["금천05"] }
+      ],
+      privateCarLabel: "자가용 이용 시",
+      navigationInput: "네비게이션에 '가산디지털2로 169-28' 또는 '성일기전' 입력",
+      parkingInfo: "건물 내 주차 가능",
+      alightingLabel: "하차 시",
+      alightingSteps: ["건물 2층으로 이동"]
+    },
+    kakaoMapApiKey: "1e3548a468e5bf57e61ee38dd6d859a8", // 카카오맵 API 키 (카카오 개발자 센터에서 발급) - 입력 시 카카오맵 사용
+    useNaverMap: false, // true: 네이버 지도 사용 (기본 검색어: 성일기전), false: 카카오맵 사용
     naverMapDefaultSearch: "성일기전", // 네이버 지도 검색창에 기본으로 표시될 검색어
     naverMapPlaceId: "18509121" // 네이버 지도 place ID (성일기전 정확한 위치)
   },

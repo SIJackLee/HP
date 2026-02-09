@@ -86,6 +86,13 @@ body {
   max-width: 720px;
 }
 
+/* 오시는 길 섹션: 컨테이너 좌우 공간 20% 증가 */
+#about-location .container {
+  max-width: 1320px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
 /* Section */
 .section {
   padding: 60px 0;
@@ -273,6 +280,18 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   font-size: 0.9rem;
+}
+
+.product-preview-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.product-preview-link:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--brand-blue);
 }
 
 .product-preview-image {
@@ -642,23 +661,114 @@ body {
 }
 
 .location-two-col {
+  --location-left-ratio: 4;
+  --location-right-ratio: 7.2;
   display: flex;
+  flex-direction: row;
   gap: 2rem;
   align-items: stretch;
   margin-top: 1.5rem;
 }
 
 .location-two-col__left {
-  flex: 1;
+  flex: var(--location-left-ratio);
   min-width: 0;
 }
 
 .location-two-col__right {
-  flex: 1;
+  flex: var(--location-right-ratio);
   min-width: 0;
+}
+
+.location-directions {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.25rem;
+}
+
+.location-directions__address-label,
+.location-directions__section {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--brand-blue);
+  margin: 0 0 0.25rem 0;
+}
+
+.location-directions__address-label {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.location-directions__sub {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0.5rem 0 0.5rem 0;
+}
+
+.location-directions__text {
+  color: var(--text);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.location-directions__bus-stops,
+.location-directions__car-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.location-directions__bus-stops li,
+.location-directions__car-list > li {
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.location-directions__bus-stops li::before,
+.location-directions__car-list > li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-blue);
+}
+
+.location-stop-name {
+  display: block;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.location-stop-buses {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+  padding-left: 0;
+}
+
+.location-directions__car-list ul {
+  list-style: none;
+  padding-left: 1rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.location-directions__car-list ul li {
+  position: relative;
+  padding-left: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.location-directions__car-list ul li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--muted);
 }
 
 /* 오시는 길 - 세로 레이아웃 (옵션 2) */
@@ -685,8 +795,8 @@ body {
 .location-map-embed {
   position: relative;
   width: 100%;
-  height: 450px;
-  min-height: 400px;
+  height: 540px;
+  min-height: 480px;
   border-radius: var(--radius);
   overflow: hidden;
   background: var(--surface);
@@ -1016,6 +1126,7 @@ body {
 
 /* ===== 제품소개 페이지 ===== */
 .product-card {
+  scroll-margin-top: 5rem;
   background: var(--bg);
   border-radius: var(--radius);
   overflow: hidden;
@@ -1329,8 +1440,13 @@ body {
     flex-direction: column;
   }
 
+  .location-two-col__left,
   .location-two-col__right {
-    min-height: 200px;
+    flex: none;
+  }
+
+  .location-two-col__right {
+    min-height: 300px;
   }
 
   .location-vertical {
@@ -1342,8 +1458,8 @@ body {
   }
 
   .location-map-embed {
-    height: 350px;
-    min-height: 300px;
+    height: 420px;
+    min-height: 360px;
   }
 }
 
@@ -1744,8 +1860,8 @@ body {
   }
 
   .location-map-embed {
-    height: 300px;
-    min-height: 250px;
+    height: 360px;
+    min-height: 300px;
   }
 }
 

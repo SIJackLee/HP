@@ -70,12 +70,28 @@
         <section class="section">
           <div class="container">
             <h2 class="section-title" id="aboutLocationTitle"></h2>
-            <div class="location-vertical">
-              <div class="location-address-card">
-                <p class="location-address" id="aboutLocationAddress"></p>
-                <a href="#" id="aboutMapLink" class="map-link map-link--button" target="_blank" rel="noopener noreferrer"></a>
+            <div class="location-two-col">
+              <div class="location-two-col__left">
+                <div class="location-directions">
+                  <h3 class="location-directions__address-label" id="aboutLocationAddressLabel"></h3>
+                  <p class="location-address" id="aboutLocationAddress"></p>
+
+                  <h3 class="location-directions__section" id="aboutPublicTransportLabel">대중교통 이용 시</h3>
+                  <h4 class="location-directions__sub" id="aboutBusStopsLabel"></h4>
+                  <ul class="location-directions__bus-stops" id="aboutBusStops"></ul>
+
+                  <h3 class="location-directions__section" id="aboutPrivateCarLabel">자가용 이용 시</h3>
+                  <p class="location-directions__text" id="aboutNavigationInput"></p>
+                  <ul class="location-directions__car-list">
+                    <li id="aboutParkingInfo"></li>
+                    <li>
+                      <strong id="aboutAlightingLabel"></strong>
+                      <ul id="aboutAlightingSteps"></ul>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div class="location-map-full">
+              <div class="location-two-col__right">
                 <div class="location-map-embed" id="aboutMapEmbedWrap"></div>
               </div>
             </div>

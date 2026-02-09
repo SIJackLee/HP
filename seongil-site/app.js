@@ -202,17 +202,17 @@ function injectHomePage() {
   const viewAllProductsBtn = document.getElementById('viewAllProductsBtn');
   if (viewAllProductsBtn) viewAllProductsBtn.textContent = CONTENT.ui?.buttons?.viewAllProducts || '';
   
-  // 홈페이지 제품 미리보기
+  // 홈페이지 제품 미리보기 (클릭 시 제품소개 페이지 해당 제품 카드로 이동)
   const homeProductsPreview = document.getElementById('homeProductsPreview');
   if (homeProductsPreview && CONTENT.products) {
     const previewProducts = CONTENT.products.slice(0, 3);
-    homeProductsPreview.innerHTML = previewProducts.map(product => {
+    homeProductsPreview.innerHTML = previewProducts.map((product, index) => {
       const imageSrc = product.imageFileName 
         ? `assets/products/${encodeURIComponent(product.imageFileName)}`
         : null;
       
       return `
-        <div class="card">
+        <a href="products.html#product-${index}" class="card product-preview-link">
           <div class="product-preview-image">
             ${imageSrc 
               ? `<img src="${imageSrc}" alt="${product.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'placeholder\\'>${CONTENT.ui?.status?.imagePlaceholder || ''}</div>'">`
@@ -221,7 +221,7 @@ function injectHomePage() {
           </div>
           <h3>${product.name}</h3>
           <p>${product.description}</p>
-        </div>
+        </a>
       `;
     }).join('');
   }
@@ -351,12 +351,38 @@ function injectAboutPage() {
   if (aboutLocationTitle) aboutLocationTitle.textContent = CONTENT.about?.locationTitle || '';
   const aboutLocationAddress = document.getElementById('aboutLocationAddress');
   if (aboutLocationAddress) aboutLocationAddress.textContent = CONTENT.contact?.address || '';
-  const mapHref = CONTENT.contact?.mapLink || '#';
-  const mapLabel = CONTENT.ui?.buttons?.viewMap || '지도 보기';
-  const aboutMapLink = document.getElementById('aboutMapLink');
-  if (aboutMapLink) {
-    aboutMapLink.textContent = mapLabel;
-    aboutMapLink.href = ensureHttps(mapHref);
+  const dir = CONTENT.contact?.locationDirections;
+  const aboutLocationAddressLabel = document.getElementById('aboutLocationAddressLabel');
+  if (aboutLocationAddressLabel) aboutLocationAddressLabel.textContent = dir?.addressLabel || '주소';
+  const aboutBusStopsLabel = document.getElementById('aboutBusStopsLabel');
+  if (aboutBusStopsLabel) aboutBusStopsLabel.textContent = dir?.busStopsLabel || '가장 가까운 버스 정류장';
+  const aboutBusStops = document.getElementById('aboutBusStops');
+  if (aboutBusStops && dir?.busStops?.length) {
+    aboutBusStops.innerHTML = dir.busStops.map(function (stop) {
+      const buses = (stop.buses || []).join(', ');
+      const walkText = stop.walkMinutes ? ' (도보 약 ' + stop.walkMinutes + '분)' : '';
+      return '<li><span class="location-stop-name">' + stop.name + walkText + '</span><span class="location-stop-buses">경유 버스: ' + buses + '</span></li>';
+    }).join('');
+  } else if (aboutBusStops) {
+    aboutBusStops.innerHTML = '';
+  }
+  const aboutPublicTransportLabel = document.getElementById('aboutPublicTransportLabel');
+  if (aboutPublicTransportLabel && dir?.publicTransportLabel) aboutPublicTransportLabel.textContent = dir.publicTransportLabel;
+  const aboutPrivateCarLabel = document.getElementById('aboutPrivateCarLabel');
+  if (aboutPrivateCarLabel && dir?.privateCarLabel) aboutPrivateCarLabel.textContent = dir.privateCarLabel;
+  const aboutNavigationInput = document.getElementById('aboutNavigationInput');
+  if (aboutNavigationInput) aboutNavigationInput.textContent = dir?.navigationInput || '';
+  const aboutParkingInfo = document.getElementById('aboutParkingInfo');
+  if (aboutParkingInfo) aboutParkingInfo.textContent = dir?.parkingInfo || '';
+  const aboutAlightingLabel = document.getElementById('aboutAlightingLabel');
+  if (aboutAlightingLabel) aboutAlightingLabel.textContent = dir?.alightingLabel || '하차 시';
+  const aboutAlightingSteps = document.getElementById('aboutAlightingSteps');
+  if (aboutAlightingSteps && dir?.alightingSteps?.length) {
+    aboutAlightingSteps.innerHTML = dir.alightingSteps.map(function (step) {
+      return '<li>' + step + '</li>';
+    }).join('');
+  } else if (aboutAlightingSteps) {
+    aboutAlightingSteps.innerHTML = '';
   }
   const mapEmbedWrap = document.getElementById('aboutMapEmbedWrap');
   if (mapEmbedWrap) {
@@ -655,7 +681,7 @@ function injectProductsPage() {
           : null;
         
         return `
-          <div class="product-card" data-product-index="${index}" style="cursor: pointer;">
+          <div class="product-card" id="product-${index}" data-product-index="${index}" style="cursor: pointer;">
             <div class="product-image">
               ${imageSrc 
                 ? `<img src="${imageSrc}" alt="${product.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'placeholder\\'>${CONTENT.ui?.status?.imagePlaceholder || ''}</div>'">`
@@ -1032,7 +1058,7 @@ function renderLinearHistory(container, historyData) {
         ? item.events
         : (item.event != null ? [item.event] : []);
       const eventsHtml = events
-        .map(ev => `<div class="history-event">${ev}</div>`)
+        .map(ev => `<div class="history-event">● ${ev}</div>`)
         .join('');
 
       return `
@@ -1068,7 +1094,7 @@ function renderZigzagHistory(container, historyData) {
             ? item.events
             : (item.event != null ? [item.event] : []);
           const eventsHtml = events
-            .map(ev => `<div class="history-zigzag-event">${ev}</div>`)
+            .map(ev => `<div class="history-zigzag-event">● ${ev}</div>`)
             .join('');
           return `
             <div class="history-zigzag-card">
