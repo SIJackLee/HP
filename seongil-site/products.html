@@ -52,6 +52,113 @@
         </div>
       </div>
     </section>
+
+    <!-- 제품 소개 (재원표 기반 상세 규격) -->
+    <section class="section product-intro-section" id="productIntroSection">
+      <div class="container">
+        <h2 class="product-intro-title">제품 규격</h2>
+        <p class="product-intro-guide">옵션을 선택하면 해당 스펙이 표시됩니다.</p>
+        <div class="product-intro-tabs" id="productIntroTabs" role="tablist">
+          <button type="button" class="product-intro-tab active" data-tab="motor" role="tab">모터</button>
+          <button type="button" class="product-intro-tab" data-tab="fan" role="tab">환기팬</button>
+          <button type="button" class="product-intro-tab" data-tab="controllers" role="tab">컨트롤러</button>
+          <button type="button" class="product-intro-tab" data-tab="hood" role="tab">후드</button>
+          <button type="button" class="product-intro-tab" data-tab="shutter" role="tab">셔터</button>
+          <button type="button" class="product-intro-tab" data-tab="inlet" role="tab">인렛</button>
+        </div>
+        <div class="product-intro-compare-wrap">
+          <label class="product-intro-compare-label">
+            <input type="checkbox" id="productIntroCompareMode" class="product-intro-compare-checkbox" />
+            비교 모드
+          </label>
+        </div>
+        <div class="product-intro-panels">
+          <div class="product-intro-panel active" id="panel-motor" role="tabpanel">
+            <div class="product-intro-select-wrap">
+              <label for="selectMotor">모델</label>
+              <select id="selectMotor" class="product-intro-select" aria-label="모터 모델 선택"></select>
+            </div>
+            <div class="product-intro-specs-wrap">
+              <div id="motorSpecCards" class="product-intro-spec-grid"></div>
+              <div id="motorDimCards" class="product-intro-spec-grid product-intro-dim-section"></div>
+            </div>
+          </div>
+          <div class="product-intro-panel" id="panel-fan" role="tabpanel">
+            <div class="product-intro-fan-subtabs">
+              <label><input type="radio" name="fanPhase" value="1p" checked /> 1상 220V(60Hz)</label>
+              <label><input type="radio" name="fanPhase" value="3p" /> 3상 220/380V(60Hz)</label>
+            </div>
+            <div class="product-intro-select-wrap">
+              <label for="selectFan">형식</label>
+              <select id="selectFan" class="product-intro-select" aria-label="환기팬 형식 선택"></select>
+            </div>
+            <div class="product-intro-two-col">
+              <div id="fanDimImageWrap" class="product-intro-dim-image-col" hidden>
+                <img id="fanDimImgA" src="" alt="환기팬 A타입 치수 도면" class="product-intro-dim-img" />
+                <img id="fanDimImgD" src="" alt="환기팬 D타입 치수 도면" class="product-intro-dim-img" />
+              </div>
+              <div class="product-intro-spec-col">
+                <div class="product-intro-specs-wrap">
+                  <div id="fanSpecCards" class="product-intro-spec-grid"></div>
+                  <div id="fanDimCards" class="product-intro-spec-grid product-intro-dim-section"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="product-intro-panel" id="panel-controllers" role="tabpanel">
+            <div class="product-intro-select-wrap">
+              <label for="selectController">모델</label>
+              <select id="selectController" class="product-intro-select" aria-label="컨트롤러 모델 선택"></select>
+            </div>
+            <div id="controllerSpecCards" class="product-intro-spec-grid"></div>
+          </div>
+          <div class="product-intro-panel" id="panel-hood" role="tabpanel">
+            <div class="product-intro-select-wrap">
+              <label for="selectHood">TYPE</label>
+              <select id="selectHood" class="product-intro-select" aria-label="후드 TYPE 선택"></select>
+            </div>
+            <div class="product-intro-two-col">
+              <div id="hoodDimImageWrap" class="product-intro-dim-image-col" hidden>
+                <img id="hoodDimImg" src="" alt="후드 치수 도면" class="product-intro-dim-img" />
+              </div>
+              <div class="product-intro-spec-col">
+                <div id="hoodSpecCards" class="product-intro-spec-grid"></div>
+              </div>
+            </div>
+          </div>
+          <div class="product-intro-panel" id="panel-shutter" role="tabpanel">
+            <div class="product-intro-select-wrap">
+              <label for="selectShutter">TYPE</label>
+              <select id="selectShutter" class="product-intro-select" aria-label="셔터 TYPE 선택"></select>
+            </div>
+            <div class="product-intro-two-col">
+              <div id="shutterDimImageWrap" class="product-intro-dim-image-col" hidden>
+                <img id="shutterDimImg" src="" alt="셔터 치수 도면" class="product-intro-dim-img" />
+              </div>
+              <div class="product-intro-spec-col">
+                <div id="shutterSpecCards" class="product-intro-spec-grid"></div>
+              </div>
+            </div>
+          </div>
+          <div class="product-intro-panel" id="panel-inlet" role="tabpanel">
+            <div class="product-intro-two-col product-intro-inlet-layout">
+              <div id="inletDimImageWrap" class="product-intro-dim-image-col" hidden>
+                <img id="inletDimImg" src="" alt="인렛 치수 도면" class="product-intro-dim-img" />
+              </div>
+              <div class="product-intro-spec-col">
+                <div id="inletSpecCards" class="product-intro-spec-grid"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="productIntroComparePanel" class="product-intro-compare-panel" hidden>
+          <div class="product-intro-compare-cols">
+            <div class="product-intro-compare-col"><h3 id="compareTitleA" class="product-intro-compare-col-title">이전 선택</h3><div id="compareCardsA" class="product-intro-spec-grid"></div></div>
+            <div class="product-intro-compare-col"><h3 id="compareTitleB" class="product-intro-compare-col-title">현재 선택</h3><div id="compareCardsB" class="product-intro-spec-grid"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- 푸터 -->
@@ -80,5 +187,7 @@
 
   <script src="content.js"></script>
   <script src="app.js"></script>
+  <script src="assets/data/specs.js"></script>
+  <script src="product-intro.js"></script>
 </body>
 </html>
