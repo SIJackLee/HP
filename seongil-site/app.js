@@ -8,6 +8,14 @@
 
 const CONTENT = window.SITE_CONTENT || {};
 
+// ========== BLDC 비디오 UX 테스트 모드 (토글) ==========
+// index.html 등에서 window.VIDEO_MODE 설정. 미설정 시 1.
+// 1 = HERO 전용 배경 영상 (index만)
+// 2 = 사이드 영역 영상 (index만, hero 하단 섹션)
+// 3 = 전체 페이지 배경 영상 (모든 페이지, 모바일에서는 자동 비활성화)
+var VIDEO_MODE = typeof window.VIDEO_MODE !== 'undefined' ? window.VIDEO_MODE : 1;
+var VIDEO_DISABLED = typeof window.VIDEO_DISABLED !== 'undefined' ? window.VIDEO_DISABLED : false;
+
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', function() {
   // 메뉴 활성화 처리
@@ -40,6 +48,9 @@ document.addEventListener('DOMContentLoaded', function() {
       break;
   }
   
+  // BLDC 비디오: 테스트 모드에 따라 조건부 주입 (성능 fallback / 모바일 MODE3 비활성화 포함)
+  initBldcVideo(page);
+  
   // 모바일 메뉴 토글
   initMobileMenu();
 });
@@ -61,6 +72,121 @@ function getCurrentPage() {
     return 'support';
   }
   return 'index';
+}
+
+// ========== BLDC 비디오 UX 테스트: 공통/모드별 주입 ==========
+var BLDC_VIDEO_SRC = 'assets/video/bldc-hero.mp4';
+
+/**
+ * 공통 video 엘리먼트 생성 (코드 중복 최소화)
+ * autoplay, muted, loop, playsinline, preload="none" 적용
+ */
+function createBldcVideoElement() {
+  var video = document.createElement('video');
+  video.setAttribute('src', BLDC_VIDEO_SRC);
+  video.setAttribute('preload', 'none');
+  video.setAttribute('muted', '');
+  video.setAttribute('playsinline', '');
+  video.setAttribute('loop', '');
+  video.setAttribute('autoplay', '');
+  video.setAttribute('aria-hidden', 'true');
+  video.classList.add('bldc-video');
+  return video;
+}
+
+/**
+ * 모바일 여부 (MODE 3 전체 배경은 모바일에서 자동 비활성화)
+ */
+function isMobile() {
+  return window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+}
+
+/**
+ * 성능/접근성 fallback: 영상 비활성화 시 사용 (prefers-reduced-motion 시에도 미재생 권장)
+ */
+function shouldDisableVideo() {
+  if (VIDEO_DISABLED) return true;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * MODE 1: hero 섹션 내부에 비디오 + 오버레이 삽입 (index 전용)
+ */
+function applyBldcVideoMode1() {
+  var hero = document.querySelector('.hero');
+  if (!hero) return;
+  var wrap = document.createElement('div');
+  wrap.className = 'hero-video-wrap';
+  var video = createBldcVideoElement();
+  var overlay = document.createElement('div');
+  overlay.className = 'hero-video-overlay';
+  overlay.setAttribute('aria-hidden', 'true');
+  wrap.appendChild(video);
+  wrap.appendChild(overlay);
+  hero.insertBefore(wrap, hero.firstChild);
+  video.play().catch(function() {});
+}
+
+/**
+ * MODE 2: hero 하단에 비디오 배경 섹션 추가 (index 전용, 50~70vh, 텍스트 우측/중앙)
+ */
+function applyBldcVideoMode2() {
+  var main = document.getElementById('main-content');
+  var hero = document.querySelector('.hero');
+  if (!main || !hero) return;
+  var section = document.createElement('section');
+  section.className = 'video-section-side';
+  section.setAttribute('aria-label', 'BLDC 소개 영상');
+  var wrap = document.createElement('div');
+  wrap.className = 'video-section-side__wrap';
+  var video = createBldcVideoElement();
+  var overlay = document.createElement('div');
+  overlay.className = 'video-section-side__overlay';
+  overlay.setAttribute('aria-hidden', 'true');
+  var content = document.createElement('div');
+  content.className = 'video-section-side__content';
+  content.innerHTML = '<p class="video-section-side__text">BLDC 모터 기술</p>';
+  wrap.appendChild(video);
+  wrap.appendChild(overlay);
+  wrap.appendChild(content);
+  section.appendChild(wrap);
+  hero.parentNode.insertBefore(section, hero.nextSibling);
+  video.play().catch(function() {});
+}
+
+/**
+ * MODE 3: body 배경 고정 비디오 (모든 페이지, 모바일 제외). header/footer 가독성용 오버레이.
+ */
+function applyBldcVideoMode3() {
+  var wrap = document.createElement('div');
+  wrap.className = 'video-bg-full-wrap';
+  wrap.setAttribute('aria-hidden', 'true');
+  var video = createBldcVideoElement();
+  var overlay = document.createElement('div');
+  overlay.className = 'video-bg-full-overlay';
+  overlay.setAttribute('aria-hidden', 'true');
+  wrap.appendChild(video);
+  wrap.appendChild(overlay);
+  document.body.insertBefore(wrap, document.body.firstChild);
+  video.play().catch(function() {});
+}
+
+/**
+ * VIDEO_MODE에 따라 한 가지 방식만 적용. 스크롤 시 영상 유지(parallax 없음).
+ */
+function initBldcVideo(page) {
+  if (shouldDisableVideo()) return;
+  var mode = VIDEO_MODE;
+  if (mode === 3 && isMobile()) return;
+  if (mode === 1 || mode === 2) {
+    if (page !== 'index') return;
+  }
+  if (mode === 1) applyBldcVideoMode1();
+  else if (mode === 2) applyBldcVideoMode2();
+  else if (mode === 3) applyBldcVideoMode3();
 }
 
 // 메뉴 활성화

@@ -11,6 +11,11 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- BLDC 비디오 UX 테스트: 모드 전환 (1=HERO, 2=SIDE, 3=FULL). MODE3 전체페이지 테스트 시 다른 HTML에서도 동일 값 설정 -->
+  <script>
+    window.VIDEO_MODE = 1;   // 1=hero배경, 2=사이드섹션, 3=전체배경(모바일자동비활성화)
+    window.VIDEO_DISABLED = false; // true 시 영상 비활성화(성능 fallback)
+  </script>
   <a href="#main-content" class="skip-link"></a>
   
   <!-- 헤더 -->

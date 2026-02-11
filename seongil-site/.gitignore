@@ -23,3 +23,6 @@ package-lock.json
 *.tmp
 *.temp
 .cache/
+
+# Large video assets (GitHub 100MB limit; keep locally for BLDC UX test)
+assets/video/*.mp4

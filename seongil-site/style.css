@@ -2153,3 +2153,140 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+/* ============================================================
+   BLDC 비디오 UX 테스트 (3가지 모드)
+   - MODE 1: hero 전용 배경
+   - MODE 2: 사이드 섹션 배경 (50~70vh)
+   - MODE 3: 전체 페이지 고정 배경 (모바일에서 JS 비활성화)
+   - 공통: autoplay, muted, loop, playsinline, preload=none
+   ============================================================ */
+
+/* 공통: 비디오 엘리먼트 기본 (object-fit cover, 스크롤 시 유지) */
+.bldc-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* ---------- MODE 1: HERO 전용 배경 영상 ---------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-video-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-video-wrap .bldc-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+.hero .hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- MODE 2: 사이드 영역 영상 (섹션 배경, 50~70vh) ---------- */
+.video-section-side {
+  position: relative;
+  min-height: 50vh;
+  max-height: 70vh;
+  height: 60vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-section-side__wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.video-section-side__wrap .bldc-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-section-side__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.video-section-side__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+  max-width: 90%;
+}
+
+.video-section-side__text {
+  color: #fff;
+  font-size: 1.25rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 769px) {
+  .video-section-side__content {
+    text-align: right;
+    margin-left: auto;
+    padding-right: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .video-section-side {
+    min-height: 40vh;
+    max-height: 55vh;
+    height: 45vh;
+  }
+}
+
+/* ---------- MODE 3: 전체 페이지 배경 영상 (고정, header/footer 가독성 유지) ---------- */
+.video-bg-full-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+}
+
+.video-bg-full-wrap .bldc-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-bg-full-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -9;
+  background: rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+/* header / main / footer는 기존 z-index로 오버레이 위에 표시됨 */
