@@ -113,20 +113,15 @@ function shouldDisableVideo() {
 }
 
 /**
- * MODE 1: hero 섹션 내부에 비디오 + 오버레이 삽입 (index 전용)
+ * MODE 1: hero 섹션 내부에 비디오만 삽입 (오버레이 제거, 그라데이션은 .hero::before로 통일)
  */
 function applyBldcVideoMode1() {
   var hero = document.querySelector('.hero');
   if (!hero) return;
-  var wrap = document.createElement('div');
-  wrap.className = 'hero-video-wrap';
   var video = createBldcVideoElement();
-  var overlay = document.createElement('div');
-  overlay.className = 'hero-video-overlay';
-  overlay.setAttribute('aria-hidden', 'true');
-  wrap.appendChild(video);
-  wrap.appendChild(overlay);
-  hero.insertBefore(wrap, hero.firstChild);
+  video.classList.add('hero-video');
+  video.setAttribute('aria-hidden', 'true');
+  hero.insertBefore(video, hero.firstChild);
   video.play().catch(function() {});
 }
 
