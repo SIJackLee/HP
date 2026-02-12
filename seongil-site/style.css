@@ -170,17 +170,16 @@ body {
   display: block;
 }
 
-/* Hero (홈페이지 메인) - 높이는 CSS로 고정, video 유무와 무관 */
+/* Hero (홈페이지 메인) - 다른 페이지(.page-hero)와 동일한 높이 체계(콘텐츠+패딩) */
 .hero {
   position: relative;
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   text-align: center;
   color: white;
-  padding: 100px 20px;
+  padding: 80px 20px;
 }
 
 /* 브랜드 그라데이션 레이어 (video 아래, 콘텐츠 위) */
@@ -1861,7 +1860,7 @@ body {
   }
   
   .hero {
-    padding: 60px 20px;
+    padding: 50px 20px;
   }
   
   .page-hero {
