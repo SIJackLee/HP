@@ -44,22 +44,20 @@ document.addEventListener('DOMContentLoaded', function() {
   initMobileMenu();
 });
 
-// 현재 페이지 확인
+// 현재 페이지 확인 (about.html · about 등 확장자/클린 URL 모두 허용)
 function getCurrentPage() {
   const path = window.location.pathname;
-  const filename = path.split('/').pop() || 'index.html';
-  
-  if (filename === 'index.html' || filename === '' || path.endsWith('/')) {
+  const segments = path.split('/').filter(Boolean);
+  let slug = segments.length ? segments[segments.length - 1] : '';
+  slug = String(slug).replace(/\.html$/i, '').toLowerCase();
+
+  if (!slug || slug === 'index') {
     return 'index';
-  } else if (filename === 'about.html') {
-    return 'about';
-  } else if (filename === 'products.html') {
-    return 'products';
-  } else if (filename === 'resources.html') {
-    return 'resources';
-  } else if (filename === 'support.html') {
-    return 'support';
   }
+  if (slug === 'about') return 'about';
+  if (slug === 'products') return 'products';
+  if (slug === 'resources') return 'resources';
+  if (slug === 'support') return 'support';
   return 'index';
 }
 
@@ -181,16 +179,60 @@ function injectHomePage() {
   
   const heroSubtitle = document.getElementById('heroSubtitle');
   if (heroSubtitle) heroSubtitle.textContent = CONTENT.home?.heroSubtitle || '';
+
+  const heroLearnMoreBtn = document.getElementById('heroLearnMoreBtn');
+  if (heroLearnMoreBtn) heroLearnMoreBtn.textContent = CONTENT.ui?.buttons?.companyIntroCta || CONTENT.ui?.buttons?.learnMore || '';
   
   // 회사 소개 섹션
-  const aboutSectionTitle = document.getElementById('aboutSectionTitle');
-  if (aboutSectionTitle) aboutSectionTitle.textContent = CONTENT.home?.aboutSectionTitle || '';
-  
-  const aboutSectionText = document.getElementById('aboutSectionText');
-  if (aboutSectionText) aboutSectionText.textContent = CONTENT.home?.aboutSectionText || '';
-  
-  const learnMoreBtn = document.getElementById('learnMoreBtn');
-  if (learnMoreBtn) learnMoreBtn.textContent = CONTENT.ui?.buttons?.learnMore || '';
+  const newsSectionTitle = document.getElementById('newsSectionTitle');
+  if (newsSectionTitle) newsSectionTitle.textContent = CONTENT.home?.newsSectionTitle || '';
+
+  const newsSectionSubtitle = document.getElementById('newsSectionSubtitle');
+  if (newsSectionSubtitle) newsSectionSubtitle.textContent = CONTENT.home?.newsSectionSubtitle || '';
+
+  const homeNewsList = document.getElementById('homeNewsList');
+  if (homeNewsList && Array.isArray(CONTENT.home?.newsItems)) {
+    homeNewsList.innerHTML = CONTENT.home.newsItems.map((item) => {
+      const href = item.href || '';
+      const imageSrc = item.imageFileName
+        ? `assets/images/news/${encodeURIComponent(item.imageFileName)}`
+        : '';
+      const placeholderLabel = CONTENT.ui?.status?.newsImagePlaceholder || '기사 이미지 준비 중';
+      const imageHtml = imageSrc
+        ? `<img src="${imageSrc}" alt="${item.title || '기사 이미지'}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'news-image-placeholder\\'>${placeholderLabel}</div>'">`
+        : `<div class="news-image-placeholder">${placeholderLabel}</div>`;
+
+      return `
+        <a class="news-card" href="${href}" target="_blank" rel="noopener noreferrer">
+          <div class="news-image">
+            ${imageHtml}
+          </div>
+          <div class="news-content">
+            <p class="news-source">${item.source || ''}</p>
+            <h3 class="news-title">${item.title || ''}</h3>
+            <p class="news-summary">${item.summary || ''}</p>
+            <span class="news-link">${CONTENT.ui?.buttons?.viewDetails || '자세히 보기 →'}</span>
+          </div>
+        </a>
+      `;
+    }).join('');
+    homeNewsList.dataset.rendered = 'true';
+    if (!homeNewsList.dataset.rendered) homeNewsList.innerHTML = CONTENT.home.newsItems.map((item) => {
+      const href = item.href || '';
+      const linkAttrs = href
+        ? `class="news-link" href="${href}"`
+        : 'class="news-link news-link--disabled" aria-disabled="true" data-disabled="true"';
+
+      return `
+        <article class="news-item card">
+          <p class="news-meta">${item.category || ''}</p>
+          <h3 class="news-title">${item.title || ''}</h3>
+          <p class="news-description">${item.description || ''}</p>
+          <a ${linkAttrs}>${CONTENT.ui?.buttons?.viewDetails || '자세히 보기 →'}</a>
+        </article>
+      `;
+    }).join('');
+  }
   
   // 제품 섹션
   const productsSectionTitle = document.getElementById('productsSectionTitle');
@@ -224,6 +266,73 @@ function injectHomePage() {
         </a>
       `;
     }).join('');
+  }
+
+  // Product showcase lab interaction - removable mockup script
+  const productShowcaseLabTitle = document.getElementById('productShowcaseLabTitle');
+  if (productShowcaseLabTitle) productShowcaseLabTitle.textContent = CONTENT.home?.productShowcaseLabTitle || '';
+
+  const productShowcaseLabSubtitle = document.getElementById('productShowcaseLabSubtitle');
+  if (productShowcaseLabSubtitle) productShowcaseLabSubtitle.textContent = CONTENT.home?.productShowcaseLabSubtitle || '';
+
+  const productShowcaseLabRoot = document.getElementById('productShowcaseLabRoot');
+  if (productShowcaseLabRoot && Array.isArray(CONTENT.home?.productShowcaseLabItems)) {
+    const showcaseImage = CONTENT.home?.productShowcaseLabImageFileName
+      ? `assets/images/products/${encodeURIComponent(CONTENT.home.productShowcaseLabImageFileName)}`
+      : '';
+    const showcasePlaceholder = CONTENT.ui?.status?.productShowcaseLabPlaceholder || '3D 제품 이미지 준비중';
+    const showcaseImageHtml = showcaseImage
+      ? `<img src="${showcaseImage}" alt="${CONTENT.home?.productShowcaseLabTitle || '주요 제품 목업'}" class="product-showcase-lab-image" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;">`
+      : '';
+
+    productShowcaseLabRoot.innerHTML = `
+      <!-- Product showcase lab section: removable mockup test area -->
+      <div class="product-showcase-lab-stage">
+        <div class="product-showcase-lab-image-wrap">
+          ${showcaseImageHtml}
+          <div class="product-showcase-lab-placeholder" ${showcaseImage ? 'hidden' : ''}>${showcasePlaceholder}</div>
+          ${CONTENT.home.productShowcaseLabItems.map((item) => `
+            <a href="${item.href || 'products.html'}" class="product-showcase-lab-hotspot ${item.hotspotClassName || ''}" aria-label="${item.name || ''} 자세히 보기"></a>
+            <span class="product-showcase-lab-label product-showcase-lab-label--${item.key || ''}">${item.name || ''}</span>
+                <em>${CONTENT.ui?.buttons?.viewDetails || '자세히 보기 →'}</em>
+              </span>
+            </a>
+          `).join('')}
+        </div>
+      </div>
+      <div class="product-showcase-lab-mobile-list">
+        ${CONTENT.home.productShowcaseLabItems.map((item) => `
+          <a href="${item.href || 'products.html'}" class="product-showcase-lab-mobile-item">
+            <strong>${item.name || ''}</strong>
+            <span>${item.description || ''}</span>
+          </a>
+        `).join('')}
+      </div>
+    `;
+
+    const showcaseRenderedImage = productShowcaseLabRoot.querySelector('.product-showcase-lab-image');
+    const showcaseRenderedPlaceholder = productShowcaseLabRoot.querySelector('.product-showcase-lab-placeholder');
+    if (showcaseRenderedImage && showcaseRenderedPlaceholder) {
+      showcaseRenderedImage.hidden = true;
+      showcaseRenderedPlaceholder.hidden = false;
+
+      showcaseRenderedImage.addEventListener('load', () => {
+        showcaseRenderedImage.hidden = false;
+        showcaseRenderedPlaceholder.hidden = true;
+      }, { once: true });
+
+      showcaseRenderedImage.addEventListener('error', () => {
+        showcaseRenderedImage.remove();
+        showcaseRenderedPlaceholder.hidden = false;
+      }, { once: true });
+    }
+
+    const showcaseImageWrap = productShowcaseLabRoot.querySelector('.product-showcase-lab-image-wrap');
+    if (showcaseImageWrap) {
+      showcaseImageWrap.querySelectorAll('.product-showcase-lab-hotspot-label, .product-showcase-lab-tooltip, em').forEach((node) => node.remove());
+      showcaseImageWrap.querySelectorAll(':scope > span:not(.product-showcase-lab-label):not(.product-showcase-lab-placeholder)').forEach((node) => node.remove());
+    }
+
   }
 }
 
@@ -278,26 +387,40 @@ function injectAboutPage() {
       .join('');
   }
   
-  // 5대 핵심 가치
+  // 핵심 가치 (통합 이미지 우선, 없으면 카드)
   const valuesTitle = document.getElementById('coreValuesTitle');
   if (valuesTitle) valuesTitle.textContent = CONTENT.about?.coreValuesTitle || '';
   
   const valuesContainer = document.getElementById('coreValuesContainer');
-  if (valuesContainer && CONTENT.about?.coreValues) {
-    valuesContainer.innerHTML = CONTENT.about.coreValues
-      .map((value) => {
-        const iconHtml = value.iconImage
-          ? `<img src="assets/core-values/${encodeURIComponent(value.iconImage)}" alt="${(value.title || '').replace(/"/g, '&quot;')}" class="value-icon-img" loading="lazy">`
-          : (value.icon ? `<span class="value-icon-emoji">${value.icon}</span>` : '');
-        return `
+  if (valuesContainer) {
+    const singleFile = CONTENT.about?.coreValuesImageFileName;
+    if (singleFile) {
+      const altRaw = CONTENT.about?.coreValuesTitle || '핵심 가치';
+      const alt = altRaw.replace(/"/g, '&quot;');
+      valuesContainer.innerHTML =
+        '<img src="assets/core-values/' +
+        encodeURIComponent(singleFile) +
+        '" alt="' +
+        alt +
+        '" class="core-values-single-img" loading="lazy">';
+    } else if (CONTENT.about?.coreValues && CONTENT.about.coreValues.length > 0) {
+      valuesContainer.innerHTML = CONTENT.about.coreValues
+        .map((value) => {
+          const iconHtml = value.iconImage
+            ? `<img src="assets/core-values/${encodeURIComponent(value.iconImage)}" alt="${(value.title || '').replace(/"/g, '&quot;')}" class="value-icon-img" loading="lazy">`
+            : (value.icon ? `<span class="value-icon-emoji">${value.icon}</span>` : '');
+          return `
         <div class="value-card">
           <div class="value-icon">${iconHtml}</div>
           <h3>${value.title}</h3>
           <p>${value.description}</p>
         </div>
       `;
-      })
-      .join('');
+        })
+        .join('');
+    } else {
+      valuesContainer.innerHTML = '';
+    }
   }
   
   // 조직도

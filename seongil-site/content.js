@@ -36,7 +36,7 @@
  *    - paragraph1, paragraph2: 본문 문단
  *    - brandMessage: 브랜드 메시지
  *    - globalNetworkTitle, globalNetworkDescription, globalCountries: 글로벌 네트워크
- *    - coreValuesTitle, coreValues: 5대 핵심 가치 (icon: 이모티콘, iconImage: 이미지 파일명이면 assets/core-values/ 사용)
+ *    - coreValuesTitle, coreValuesImageFileName(통합 이미지 한 장, assets/core-values/), coreValues(카드 모드, coreValuesImageFileName 없을 때만)
  *    - organizationTitle, organization: 조직도
  *    - historyTitle, history: 회사 연혁
  * 
@@ -86,9 +86,9 @@ const SITE_CONTENT = {
   pages: {
     home: {
       title: "성일기전 - 축산 환경을 위한 스마트 환기 솔루션 리더",
-      description: "성일기전 - 축산 환경을 위한 스마트 환기 솔루션 리더. 최적의 축사 환경을 위한 끊임없는 노력, 연구하는 성일기전입니다.",
+      description: "성일기전 - 축산 환경을 위한 스마트 환기 솔루션 리더. 최적의 축사 환경을 위한 끊임없는 노력하는 성일기전입니다.",
       ogTitle: "성일기전 - 축산 환경을 위한 스마트 환기 솔루션",
-      ogDescription: "스마트 축사의 미래, 성일이 함께 합니다. 최적의 축사 환경을 위한 끊임없는 노력, 연구하는 성일기전입니다."
+      ogDescription: "스마트 축사의 미래, 성일이 함께 합니다. 최적의 축사 환경을 위한 끊임없는 노력하는 성일기전입니다."
     },
     about: {
       title: "회사소개 - 성일기전",
@@ -127,6 +127,57 @@ const SITE_CONTENT = {
   
   // ===== 홈페이지 콘텐츠 =====
   home: {
+    productShowcaseLabTitle: "주요 제품 목업",
+    productShowcaseLabSubtitle: "3D 제품 쇼케이스 인터랙션 테스트",
+    productShowcaseLabImageFileName: "product-showcase-3d.png",
+    productShowcaseLabItems: [
+      {
+        key: "fan",
+        name: "환기용 배기휀",
+        description: "다양한 축사 환경에 맞춘 고효율 환기 솔루션입니다.",
+        href: "products.html#fan",
+        hotspotClassName: "product-showcase-lab-hotspot--fan"
+      },
+      {
+        key: "controller",
+        name: "휀 컨트롤러",
+        description: "정밀한 제어와 커스텀 제작이 가능한 제어 장치입니다.",
+        href: "products.html#controller",
+        hotspotClassName: "product-showcase-lab-hotspot--controller"
+      },
+      {
+        key: "accessory",
+        name: "악세사리",
+        description: "후드, 샷타 등 현장 맞춤형 부속 제품을 제공합니다.",
+        href: "products.html#accessory",
+        hotspotClassName: "product-showcase-lab-hotspot--accessory"
+      }
+    ],
+    newsSectionTitle: "성일기전 소식",
+    newsSectionSubtitle: "성일기전의 주요 소식과 언론 보도를 확인하세요.",
+    newsItems: [
+      {
+        source: "피그앤포크",
+        title: "성일기전 관련 언론 보도",
+        summary: "성일기전의 성장과 축산 환기 분야의 기술력을 소개하는 기사입니다.",
+        imageFileName: "news-01.jpg",
+        href: "https://www.pignpork.com/news/articleView.html?idxno=17359"
+      },
+      {
+        source: "피그앤포크",
+        title: "녹색에너지 관련 보도",
+        summary: "친환경 에너지와 축산 환기 기술의 가치를 다룬 기사입니다.",
+        imageFileName: "news-02.jpg",
+        href: "https://www.pignpork.com/news/articleView.html?idxno=17769"
+      },
+      {
+        source: "피그앤포크",
+        title: "성일기전 업체탐방",
+        summary: "성일기전의 제품과 현장 중심 기술력을 소개한 탐방 기사입니다.",
+        imageFileName: "news-03.jpg",
+        href: "https://www.pignpork.com/news/articleView.html?idxno=17449"
+      }
+    ],
     heroTitle: "스마트 축사의 미래, 성일이 함께 합니다.",
     heroSubtitle: "최적의 축사 환경을 위한 끊임없는 노력, 연구하는 성일기전입니다.",
     aboutSectionTitle: "성일기전 소개",
@@ -141,7 +192,7 @@ const SITE_CONTENT = {
       { id: "greeting", label: "대표이사 인삿말" },
       { id: "location", label: "오시는 길" },
       { id: "global", label: "글로벌 네트워크" },
-      { id: "values", label: "5대 핵심 가치" },
+      { id: "values", label: "3대 핵심 가치" },
       { id: "organization", label: "조직도" },
       { id: "history", label: "회사 연혁" }
     ],
@@ -171,14 +222,9 @@ const SITE_CONTENT = {
       "그리스": { x: 52, y: 32 },
       "호주": { x: 82, y: 68 }
     },
-    coreValuesTitle: "5대 핵심 가치",
-    coreValues: [
-      { title: "신뢰와 책임", description: "고객과의 약속을 지키고\n책임감 있는 제품을 제공합니다.", icon: "🤝", iconImage: null },
-      { title: "고객 중심", description: "고객의 요구사항을\n최우선으로 고려합니다.", icon: "👥", iconImage: null },
-      { title: "혁신 정신", description: "지속적인 연구개발로\n기술 혁신을 추구합니다.", icon: "💡", iconImage: null },
-      { title: "도전적 실행", description: "새로운 시장과 기회에\n적극적으로 도전합니다.", icon: "🎯", iconImage: null },
-      { title: "글로벌 지향", description: "세계 시장을 향한\n지속적인 확장을 추구합니다.", icon: "🌍", iconImage: null }
-    ],
+    coreValuesTitle: "3대 핵심 가치",
+    coreValuesImageFileName: "3corevalues.png",
+    coreValues: [],
     organizationTitle: "조직도",
     organization: {
       ceo: "대표이사",
@@ -347,6 +393,8 @@ const SITE_CONTENT = {
     footerContact: "연락처",
     footerAddress: "주소",
     buttons: {
+      companyIntroCta: "더 알아보기",
+      viewDetails: "자세히 보기 →",
       learnMore: "더 알아보기",
       viewAllProducts: "전체 제품 보기",
       download: "다운로드",
@@ -355,6 +403,8 @@ const SITE_CONTENT = {
       viewMap: "지도 보기"
     },
     status: {
+      productShowcaseLabPlaceholder: "3D 제품 이미지 준비중",
+      newsImagePlaceholder: "기사 이미지 준비 중",
       imagePlaceholder: "이미지 준비중",
       resourcePending: "자료 준비중"
     },
