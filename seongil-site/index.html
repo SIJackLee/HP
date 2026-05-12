@@ -41,20 +41,18 @@
       <div class="hero-content">
         <h1 id="heroTitle"></h1>
         <p id="heroSubtitle"></p>
+        <div class="hero-cta-row">
+          <a href="about.html" class="btn btn-hero" id="heroLearnMoreBtn"></a>
+        </div>
       </div>
     </section>
 
     <!-- 회사 소개 미리보기 -->
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title" id="aboutSectionTitle"></h2>
-        <p class="section-subtitle" data-inject="slogan"></p>
-        <div class="about-content">
-          <p id="aboutSectionText"></p>
-          <div class="cta-row">
-            <a href="about.html" class="btn btn-primary" id="learnMoreBtn"></a>
-          </div>
-        </div>
+    <section class="section news-section">
+      <div class="container news-container">
+        <h2 class="section-title" id="newsSectionTitle"></h2>
+        <p class="section-subtitle" id="newsSectionSubtitle"></p>
+        <div class="news-grid" id="homeNewsList"></div>
       </div>
     </section>
 
@@ -69,6 +67,17 @@
         <div style="text-align: center; margin-top: 2rem;">
           <a href="products.html" class="btn btn-primary" id="viewAllProductsBtn"></a>
         </div>
+      </div>
+    </section>
+
+    <!-- Product showcase lab section: removable mockup test area -->
+    <section class="section product-showcase-lab-section">
+      <div class="container product-showcase-lab-container">
+        <div class="product-showcase-lab-header">
+          <h2 class="section-title product-showcase-lab-title" id="productShowcaseLabTitle"></h2>
+          <p class="section-subtitle product-showcase-lab-subtitle" id="productShowcaseLabSubtitle"></p>
+        </div>
+        <div id="productShowcaseLabRoot"></div>
       </div>
     </section>
   </main>
