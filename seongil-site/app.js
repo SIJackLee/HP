@@ -209,9 +209,7 @@ function injectHomePage() {
           </div>
           <div class="news-content">
             <p class="news-source">${item.source || ''}</p>
-            <h3 class="news-title">${item.title || ''}</h3>
-            <p class="news-summary">${item.summary || ''}</p>
-            <span class="news-link">${CONTENT.ui?.buttons?.viewDetails || '자세히 보기 →'}</span>
+            <h3 class="news-title">${item.cardTitle || item.title || ''}</h3>
           </div>
         </a>
       `;

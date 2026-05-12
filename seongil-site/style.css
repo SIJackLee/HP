@@ -370,7 +370,7 @@ body {
 .news-source {
   display: inline-flex;
   align-self: flex-start;
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.85rem;
   padding: 0.35rem 0.8rem;
   border-radius: 999px;
   background: var(--brand-gradient-soft);
@@ -380,31 +380,16 @@ body {
 }
 
 .news-title {
-  font-size: 1.2rem;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  min-height: calc(1.45em * 2);
+  font-size: 1.12rem;
   line-height: 1.45;
-  color: var(--text);
-  margin-bottom: 0.8rem;
-}
-
-.news-summary {
-  color: var(--muted);
-  margin-bottom: 1.5rem;
-  flex: 1;
-}
-
-.news-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  margin-top: auto;
-  color: var(--brand-blue);
   font-weight: 700;
-  transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.news-card:hover .news-link {
-  color: var(--primary-solid-hover);
-  transform: translateX(4px);
+  color: var(--text);
 }
 
 /* Product showcase lab section - removable mockup styles */

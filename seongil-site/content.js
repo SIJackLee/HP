@@ -159,6 +159,7 @@ const SITE_CONTENT = {
       {
         source: "피그앤포크",
         title: "성일기전 관련 언론 보도",
+        cardTitle: "2026 창립 30주년 기념 시무식 개최",
         summary: "성일기전의 성장과 축산 환기 분야의 기술력을 소개하는 기사입니다.",
         imageFileName: "press3.png",
         href: "https://www.pignpork.com/news/articleView.html?idxno=17359"
@@ -166,6 +167,7 @@ const SITE_CONTENT = {
       {
         source: "피그앤포크",
         title: "녹색에너지 관련 보도",
+        cardTitle: "대한민국 녹색에너지 대상 수상",
         summary: "친환경 에너지와 축산 환기 기술의 가치를 다룬 기사입니다.",
         imageFileName: "press2.png",
         href: "https://www.pignpork.com/news/articleView.html?idxno=17769"
@@ -173,6 +175,7 @@ const SITE_CONTENT = {
       {
         source: "피그앤포크",
         title: "성일기전 업체탐방",
+        cardTitle: "축산 환경 개선 기술 현장",
         summary: "성일기전의 제품과 현장 중심 기술력을 소개한 탐방 기사입니다.",
         imageFileName: "press1.png",
         href: "https://www.pignpork.com/news/articleView.html?idxno=17449"
