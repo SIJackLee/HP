@@ -326,6 +326,11 @@ function injectHomePage() {
     }
 
     const showcaseImageWrap = productShowcaseLabRoot.querySelector('.product-showcase-lab-image-wrap');
+    const showcaseMobileList = productShowcaseLabRoot.querySelector('.product-showcase-lab-mobile-list');
+    if (showcaseMobileList) {
+      showcaseMobileList.remove();
+    }
+
     if (showcaseImageWrap) {
       showcaseImageWrap.querySelectorAll('.product-showcase-lab-hotspot-label, .product-showcase-lab-tooltip, em').forEach((node) => node.remove());
       showcaseImageWrap.querySelectorAll(':scope > span:not(.product-showcase-lab-label):not(.product-showcase-lab-placeholder)').forEach((node) => node.remove());

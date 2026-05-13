@@ -425,11 +425,6 @@ body {
   aspect-ratio: 16 / 9;
 }
 
-.product-showcase-lab-image-wrap:hover {
-  transform: scale(1.015);
-  box-shadow: 0 24px 46px rgba(15, 23, 42, 0.12);
-}
-
 .product-showcase-lab-image,
 .product-showcase-lab-placeholder {
   width: 100%;
@@ -457,6 +452,7 @@ body {
 .product-showcase-lab-hotspot {
   position: absolute;
   display: block;
+  z-index: 2;
   border-radius: 32px;
   outline: none;
   text-decoration: none;
@@ -466,11 +462,6 @@ body {
   box-shadow: none;
   cursor: pointer;
   transition: background-color 0.22s ease;
-}
-
-.product-showcase-lab-hotspot:hover,
-.product-showcase-lab-hotspot:focus-visible {
-  background: rgba(255, 255, 255, 0.02);
 }
 
 .product-showcase-lab-hotspot--fan {
@@ -496,43 +487,72 @@ body {
 
 .product-showcase-lab-label {
   position: absolute;
+  z-index: 3;
   transform: translate(-50%, -100%);
-  background: rgba(17, 24, 39, 0.88);
-  color: #ffffff;
-  border-radius: 999px;
   padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.82);
+  color: #ffffff;
   font-size: 13px;
   font-weight: 700;
   white-space: nowrap;
-  opacity: 0;
   pointer-events: none;
-  transition: opacity 0.22s ease, transform 0.22s ease;
-}
-
-.product-showcase-lab-hotspot:hover + .product-showcase-lab-label,
-.product-showcase-lab-hotspot:focus-visible + .product-showcase-lab-label {
-  opacity: 1;
-  transform: translate(-50%, -115%);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .product-showcase-lab-label--fan {
-  left: 25%;
-  top: 25%;
+  left: 24%;
+  top: 32%;
 }
 
 .product-showcase-lab-label--controller {
-  left: 52%;
-  top: 24%;
+  left: 50%;
+  top: 30%;
 }
 
 .product-showcase-lab-label--accessory {
-  left: 77%;
-  top: 24%;
+  left: 74%;
+  top: 34%;
 }
 
 .product-showcase-lab-tooltip,
 .product-showcase-lab-hotspot-label {
   display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .product-showcase-lab-image-wrap:hover {
+    transform: scale(1.015);
+    box-shadow: 0 24px 46px rgba(15, 23, 42, 0.12);
+  }
+
+  .product-showcase-lab-hotspot:hover,
+  .product-showcase-lab-hotspot:focus-visible {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .product-showcase-lab-label {
+    opacity: 0;
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
+
+  .product-showcase-lab-hotspot:hover + .product-showcase-lab-label,
+  .product-showcase-lab-hotspot:focus-visible + .product-showcase-lab-label {
+    opacity: 1;
+    transform: translate(-50%, -115%);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .product-showcase-lab-label {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    padding: 6px 10px;
+    font-size: 12px;
+    line-height: 1.2;
+  }
 }
 
 /* Future enhancement: use separated product PNG assets for shape-accurate glow/highlight. */
@@ -542,34 +562,6 @@ body {
 
 .product-showcase-lab-mobile-list {
   display: none;
-  margin-top: 1.25rem;
-  gap: 0.9rem;
-}
-
-.product-showcase-lab-mobile-item {
-  display: block;
-  padding: 1rem 1.1rem;
-  border-radius: 18px;
-  background: #fff;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  text-decoration: none;
-  color: inherit;
-}
-
-.product-showcase-lab-mobile-item strong,
-.product-showcase-lab-mobile-item span {
-  display: block;
-}
-
-.product-showcase-lab-mobile-item strong {
-  margin-bottom: 0.35rem;
-  color: var(--text);
-}
-
-.product-showcase-lab-mobile-item span {
-  color: var(--muted);
-  line-height: 1.55;
 }
 
 /* Badge */
@@ -2216,15 +2208,15 @@ body {
   }
 
   .product-showcase-lab-label--fan {
-    left: 26%;
+    left: 24%;
   }
 
   .product-showcase-lab-label--controller {
-    left: 53%;
+    left: 50%;
   }
 
   .product-showcase-lab-label--accessory {
-    left: 78%;
+    left: 74%;
   }
 }
 
@@ -2251,13 +2243,19 @@ body {
     border-radius: 22px;
   }
 
-  .product-showcase-lab-hotspot,
-  .product-showcase-lab-label {
-    display: none;
+  .product-showcase-lab-label--fan {
+    left: 23%;
+    top: 34%;
   }
 
-  .product-showcase-lab-mobile-list {
-    display: grid;
+  .product-showcase-lab-label--controller {
+    left: 50%;
+    top: 31%;
+  }
+
+  .product-showcase-lab-label--accessory {
+    left: 75%;
+    top: 35%;
   }
 }
 
