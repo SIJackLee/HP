@@ -2249,13 +2249,13 @@ body {
   }
 
   .product-showcase-lab-label--controller {
-    left: 50%;
-    top: 25%;
+    left: 49%;
+    top: 24%;
   }
 
   .product-showcase-lab-label--accessory {
-    left: 75%;
-    top: 27%;
+    left: 76%;
+    top: 24%;
   }
 }
 
