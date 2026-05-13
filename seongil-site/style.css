@@ -548,7 +548,7 @@ body {
 @media (hover: none), (pointer: coarse) {
   .product-showcase-lab-label {
     opacity: 1;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -100%);
     padding: 6px 10px;
     font-size: 12px;
     line-height: 1.2;
@@ -2245,17 +2245,17 @@ body {
 
   .product-showcase-lab-label--fan {
     left: 23%;
-    top: 34%;
+    top: 27%;
   }
 
   .product-showcase-lab-label--controller {
     left: 50%;
-    top: 31%;
+    top: 25%;
   }
 
   .product-showcase-lab-label--accessory {
     left: 75%;
-    top: 35%;
+    top: 27%;
   }
 }
 
